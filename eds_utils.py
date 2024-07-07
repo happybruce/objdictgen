@@ -24,10 +24,7 @@
 
 import node
 from node import nosub, var, array, rec, plurivar, pluriarray, plurirec
-try:
-    set
-except NameError:
-    from sets import Set as set
+
 from types import *
 from time import *
 import os,re
@@ -371,12 +368,12 @@ def ParseEDSFile(filepath):
             # Verify that entry has an ObjectType
             values["OBJECTTYPE"] = values.get("OBJECTTYPE", 7)
             # Extract parameters defined
-            keys = set(values.keys())
+            keys = frozenset(values.keys())
             keys.discard("subindexes")
             # Extract possible parameters and parameters required
-            possible = set(ENTRY_TYPES[values["OBJECTTYPE"]]["require"] + 
+            possible = frozenset(ENTRY_TYPES[values["OBJECTTYPE"]]["require"] + 
                            ENTRY_TYPES[values["OBJECTTYPE"]]["optional"])
-            required = set(ENTRY_TYPES[values["OBJECTTYPE"]]["require"])
+            required = frozenset(ENTRY_TYPES[values["OBJECTTYPE"]]["require"])
             # Verify that parameters defined contains all the parameters required
             if not keys.issuperset(required):
                 missing = required.difference(keys)
