@@ -348,7 +348,7 @@ def FindMapVariableList(mappingdictionary, Node, compute=True):
                     name = mappingdictionary[index]["values"][subIndex]["name"]
                     if mappingdictionary[index]["struct"] & OD_IdenticalSubindexes:
                         values = Node.GetEntry(index)
-                        for i in xrange(len(values) - 1):
+                        for i in range(len(values) - 1):
                             computed_name = name
                             if compute:
                                 computed_name = StringFormat(computed_name, 1, i + 1)
@@ -689,14 +689,14 @@ class Node:
                 if type(self.Dictionary[index]) == ListType:
                     if index in self.ParamsDictionary:
                         result = []
-                        for i in xrange(len(self.Dictionary[index]) + 1):
+                        for i in range(len(self.Dictionary[index]) + 1):
                             line = DefaultParams.copy()
                             if i in self.ParamsDictionary[index]:
                                 line.update(self.ParamsDictionary[index][i])
                             result.append(line)
                         return result
                     else:
-                        return [DefaultParams.copy() for i in xrange(len(self.Dictionary[index]) + 1)]
+                        return [DefaultParams.copy() for i in range(len(self.Dictionary[index]) + 1)]
                 else:
                     result = DefaultParams.copy()
                     if index in self.ParamsDictionary:
@@ -784,23 +784,23 @@ class Node:
                     if self.UserMapping[index]["struct"] & OD_IdenticalSubindexes:
                         if self.IsStringType(self.UserMapping[index]["values"][subIndex]["type"]):
                             if self.IsRealType(values["type"]):
-                                for i in xrange(len(self.Dictionary[index])):
+                                for i in range(len(self.Dictionary[index])):
                                     self.SetEntry(index, i + 1, 0.)
                             elif not self.IsStringType(values["type"]):
-                                for i in xrange(len(self.Dictionary[index])):
+                                for i in range(len(self.Dictionary[index])):
                                     self.SetEntry(index, i + 1, 0)
                         elif self.IsRealType(self.UserMapping[index]["values"][subIndex]["type"]):
                             if self.IsStringType(values["type"]):
-                                for i in xrange(len(self.Dictionary[index])):
+                                for i in range(len(self.Dictionary[index])):
                                     self.SetEntry(index, i + 1, "")
                             elif not self.IsRealType(values["type"]):
-                                for i in xrange(len(self.Dictionary[index])):
+                                for i in range(len(self.Dictionary[index])):
                                     self.SetEntry(index, i + 1, 0)
                         elif self.IsStringType(values["type"]):
-                            for i in xrange(len(self.Dictionary[index])):
+                            for i in range(len(self.Dictionary[index])):
                                 self.SetEntry(index, i + 1, "")
                         elif self.IsRealType(values["type"]):
-                            for i in xrange(len(self.Dictionary[index])):
+                            for i in range(len(self.Dictionary[index])):
                                 self.SetEntry(index, i + 1, 0.)                        
                     else:
                         if self.IsStringType(self.UserMapping[index]["values"][subIndex]["type"]):
@@ -1157,7 +1157,7 @@ def LE_to_BE(value, size):
     """
     
     data = ("%" + str(size * 2) + "." + str(size * 2) + "X") % value
-    list_car = [data[i:i+2] for i in xrange(0, len(data), 2)]
+    list_car = [data[i:i+2] for i in range(0, len(data), 2)]
     list_car.reverse()
     return "".join([chr(int(car, 16)) for car in list_car])
 

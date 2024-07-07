@@ -713,7 +713,7 @@ def GenerateNode(filepath, nodeID = 0):
                         # Add mapping for first subindex
                         Node.AddMappingEntry(entry, 0, values = {"name" : "Number of Entries", "type" : 0x05, "access" : "ro", "pdo" : False})
                         # Add mapping for other subindexes
-                        for subindex in xrange(1, int(max_subindex) + 1):
+                        for subindex in range(1, int(max_subindex) + 1):
                             # if subindex is defined
                             if subindex in values["subindexes"]:
                                 Node.AddMappingEntry(entry, subindex, values = {"name" : values["subindexes"][subindex]["PARAMETERNAME"], 
@@ -763,7 +763,7 @@ def GenerateNode(filepath, nodeID = 0):
                         max_subindex = max(values["subindexes"].keys())
                         Node.AddEntry(entry, value = [])
                         # Define value for all subindexes except the first 
-                        for subindex in xrange(1, int(max_subindex) + 1):
+                        for subindex in range(1, int(max_subindex) + 1):
                             # Take default value if it is defined and entry is defined
                             if subindex in values["subindexes"] and "PARAMETERVALUE" in values["subindexes"][subindex]:
                                 value = values["subindexes"][subindex]["PARAMETERVALUE"]

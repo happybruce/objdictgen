@@ -448,7 +448,7 @@ class objdictedit(wx.Frame, NodeEditorTemplate):
             answer = dialog.ShowModal()
             dialog.Destroy()
             if answer == wx.ID_YES:
-                for i in xrange(self.Manager.GetBufferNumber()):
+                for i in range(self.Manager.GetBufferNumber()):
                     if self.Manager.CurrentIsSaved():
                         self.Manager.CloseCurrent()
                     else:

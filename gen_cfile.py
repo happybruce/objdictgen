@@ -61,9 +61,9 @@ def GetValidTypeInfos(typename, items=[]):
         result = type_model.match(typename)
         if result:
             values = result.groups()
-            if values[0] == "UNSIGNED" and int(values[1]) in [i * 8 for i in xrange(1, 9)]:
+            if values[0] == "UNSIGNED" and int(values[1]) in [i * 8 for i in range(1, 9)]:
                 typeinfos = ("UNS%s"%values[1], None, "uint%s"%values[1], True)
-            elif values[0] == "INTEGER" and int(values[1]) in [i * 8 for i in xrange(1, 9)]:
+            elif values[0] == "INTEGER" and int(values[1]) in [i * 8 for i in range(1, 9)]:
                 typeinfos = ("INTEGER%s"%values[1], None, "int%s"%values[1], False)
             elif values[0] == "REAL" and int(values[1]) in (32, 64):
                 typeinfos = ("%s%s"%(values[0], values[1]), None, "real%s"%values[1], False)
@@ -335,14 +335,14 @@ def GenerateFileContent(Node, headerfilepath, pointers_dict = {}):
                 name = "%(NodeName)s_Index%(index)04X"%texts
             name=UnDigitName(name);
             strIndex += "                    ODCallback_t %s_callbacks[] = \n                     {\n"%name
-            for subIndex in xrange(len(values)):
+            for subIndex in range(len(values)):
                 strIndex += "                       NULL,\n"
             strIndex += "                     };\n"
             indexCallbacks[index] = "*callbacks = %s_callbacks; "%name
         else:
             indexCallbacks[index] = ""
         strIndex += "                    const CONSTSTORE subindex %(NodeName)s_Index%(index)04X[] = \n                     {\n"%texts
-        for subIndex in xrange(len(values)):
+        for subIndex in range(len(values)):
             subentry_infos = Node.GetSubentryInfos(index, subIndex)
 	    params_infos = Node.GetParamsEntry(index,subIndex)
             if subIndex < len(values) - 1:

@@ -109,11 +109,11 @@ class CommunicationDialog(wx.Dialog):
         wx.Dialog.__init__(self, id=ID_COMMUNICATIONDIALOG,
               name='CommunicationDialog', parent=prnt, pos=wx.Point(234, 216),
               size=wx.Size(726, 437), style=wx.DEFAULT_DIALOG_STYLE|wx.RESIZE_BORDER,
-              title=_('Edit Communication Profile'))
+              title=('Edit Communication Profile'))
         self.SetClientSize(wx.Size(726, 437))
 
         self.staticText1 = wx.StaticText(id=ID_COMMUNICATIONDIALOGSTATICTEXT1,
-              label=_('Possible Profile Indexes:'), name='staticText1',
+              label=('Possible Profile Indexes:'), name='staticText1',
               parent=self, pos=wx.Point(0, 0), size=wx.Size(0,
               17), style=0)
 
@@ -137,7 +137,7 @@ class CommunicationDialog(wx.Dialog):
               id=ID_COMMUNICATIONDIALOGUNSELECT)
 
         self.staticText2 = wx.StaticText(id=ID_COMMUNICATIONDIALOGSTATICTEXT2,
-              label=_('Current Profile Indexes:'), name='staticText2',
+              label=('Current Profile Indexes:'), name='staticText2',
               parent=self, pos=wx.Point(0, 0), size=wx.Size(0,
               17), style=0)
 
@@ -272,23 +272,23 @@ class MapVariableDialog(wx.Dialog):
         wx.Dialog.__init__(self, id=ID_MAPVARIABLEDIALOG,
               name='CommunicationDialog', parent=prnt, pos=wx.Point(376, 223),
               size=wx.Size(444, 186), style=wx.DEFAULT_DIALOG_STYLE,
-              title=_('Add Map Variable'))
+              title=('Add Map Variable'))
         self.SetClientSize(wx.Size(444, 186))
 
         self.staticText1 = wx.StaticText(id=ID_MAPVARIABLEDIALOGSTATICTEXT1,
-              label=_('Index:'), name='staticText1', parent=self,
+              label=('Index:'), name='staticText1', parent=self,
               pos=wx.Point(0, 0), size=wx.Size(0, 17), style=0)
 
         self.staticText2 = wx.StaticText(id=ID_MAPVARIABLEDIALOGSTATICTEXT2,
-              label=_('Type:'), name='staticText2', parent=self,
+              label=('Type:'), name='staticText2', parent=self,
               pos=wx.Point(0, 0), size=wx.Size(0, 17), style=0)
 
         self.staticText3 = wx.StaticText(id=ID_MAPVARIABLEDIALOGSTATICTEXT3,
-              label=_('Name:'), name='staticText3', parent=self,
+              label=('Name:'), name='staticText3', parent=self,
               pos=wx.Point(0, 0), size=wx.Size(0, 17), style=0)
 
         self.staticText4 = wx.StaticText(id=ID_MAPVARIABLEDIALOGSTATICTEXT4,
-              label=_('Number:'), name='staticText4', parent=self,
+              label=('Number:'), name='staticText4', parent=self,
               pos=wx.Point(0, 0), size=wx.Size(0, 16), style=0)
 
         self.radioButton1 = wx.RadioButton(id=ID_MAPVARIABLEDIALOGRADIOBUTTON1,
@@ -318,7 +318,7 @@ class MapVariableDialog(wx.Dialog):
         
         self.IndexName = wx.TextCtrl(id=ID_MAPVARIABLEDIALOGINDEXNAME,
               name='IndexName', parent=self, pos=wx.Point(0, 0),
-              size=wx.Size(0, 24), style=0, value=_('Undefined'))
+              size=wx.Size(0, 24), style=0, value=('Undefined'))
         
         self.Number = wx.TextCtrl(id=ID_MAPVARIABLEDIALOGNUMBER,
               name='Number', parent=self, pos=wx.Point(0, 0),
@@ -364,7 +364,7 @@ class MapVariableDialog(wx.Dialog):
                 elif i == len(error) - 1:
                     text += (" and %s")%item + _(" must be integers!")
                 else:
-                    text += _(", %s")%item + _(" must be integer!")
+                    text += (", %s")%item + _(" must be integer!")
             message = wx.MessageDialog(self, _("Form isn't valid. %s")%text, _("Error"), wx.OK|wx.ICON_ERROR)
             message.ShowModal()
             message.Destroy()
@@ -1566,7 +1566,7 @@ class DCFEntryValuesDialog(wx.Dialog):
         if values != "":
             data = values[4:]
             current = 0
-            for i in xrange(BE_to_LE(values[:4])):
+            for i in range(BE_to_LE(values[:4])):
                 value = {}
                 value["Index"] = BE_to_LE(data[current:current+2])
                 value["Subindex"] = BE_to_LE(data[current+2:current+3])
