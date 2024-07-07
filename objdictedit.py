@@ -51,7 +51,7 @@ ScriptDirectory = os.path.split(os.path.realpath(__file__))[0]
 
 # Import module for internationalization
 import gettext
-import __builtin__
+import builtins
 
 # Get folder containing translation files
 localedir = os.path.join(ScriptDirectory,"locale")
@@ -61,17 +61,17 @@ langid = wx.LANGUAGE_DEFAULT
 domain = "objdictgen"
 
 # Define locale for wx
-loc = __builtin__.__dict__.get('loc', None)
+loc = builtins.__dict__.get('loc', None)
 if loc is None:
     loc = wx.Locale(langid)
-    __builtin__.__dict__['loc'] = loc
+    builtins.__dict__['loc'] = loc
 # Define location for searching translation files
 loc.AddCatalogLookupPathPrefix(localedir)
 # Define locale domain
 loc.AddCatalog(domain)
 
 if __name__ == '__main__':
-    __builtin__.__dict__['_'] = wx.GetTranslation
+    builtins.__dict__['_'] = wx.GetTranslation
 
 from nodemanager import *
 from nodeeditortemplate import NodeEditorTemplate
