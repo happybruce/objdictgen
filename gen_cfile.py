@@ -82,11 +82,11 @@ def GetValidTypeInfos(typename, items=[]):
             elif values[0] == "BOOLEAN":
                 typeinfos = ("UNS8", None, "boolean", False)
             else:
-                raise ValueError, _("""!!! %s isn't a valid type for CanFestival.""")%typename
+                raise ValueError(_("""!!! %s isn't a valid type for CanFestival.""")%typename)
             if typeinfos[2] not in ["visible_string", "domain"]:
                 internal_types[typename] = typeinfos
         else:
-            raise ValueError, _("""!!! %s isn't a valid type for CanFestival.""")%typename
+            raise ValueError(_("""!!! %s isn't a valid type for CanFestival.""")%typename)
     return typeinfos
 
 def ComputeValue(type, value):
@@ -107,7 +107,7 @@ def WriteFile(filepath, content):
 def GetTypeName(Node, typenumber):
     typename = Node.GetTypeName(typenumber)
     if typename is None:
-        raise ValueError, _("""!!! Datatype with value "0x%4.4X" isn't defined in CanFestival.""")%typenumber
+        raise ValueError(_("""!!! Datatype with value "0x%4.4X" isn't defined in CanFestival.""")%typenumber)
     return typename
 
 def GenerateFileContent(Node, headerfilepath, pointers_dict = {}):
@@ -189,7 +189,7 @@ def GenerateFileContent(Node, headerfilepath, pointers_dict = {}):
         texts["index"] = index
         strIndex = ""
         entry_infos = Node.GetEntryInfos(index)
-	params_infos = Node.GetParamsEntry(index)
+        params_infos = Node.GetParamsEntry(index)
         texts["EntryName"] = entry_infos["name"].encode('ascii','replace')
         values = Node.GetEntry(index)
         callbacks = Node.HasEntryCallbacks(index)
@@ -205,28 +205,28 @@ def GenerateFileContent(Node, headerfilepath, pointers_dict = {}):
             typeinfos = GetValidTypeInfos(typename, [values])
             if typename is "DOMAIN" and index in variablelist:
                 if not typeinfos[1]:
-                    raise ValueError, _("\nDomain variable not initialized\nindex : 0x%04X\nsubindex : 0x00")%index
+                    raise ValueError(_("\nDomain variable not initialized\nindex : 0x%04X\nsubindex : 0x00")%index)
             texts["subIndexType"] = typeinfos[0]
             if subentry_infos["access"].upper() == "CONST":
-		texts["subIndexType"] = "const CONSTSTORE " + texts["subIndexType"]
+                texts["subIndexType"] = "const CONSTSTORE " + texts["subIndexType"]
             if typeinfos[1] is not None:
                 if params_infos["buffer_size"] != "":
-			texts["suffixe"] = "[%s]"%params_infos["buffer_size"]
-		else:
-			texts["suffixe"] = "[%d]"%typeinfos[1]
+                    texts["suffixe"] = "[%s]"%params_infos["buffer_size"]
+                else:
+                    texts["suffixe"] = "[%d]"%typeinfos[1]
             else:
                 texts["suffixe"] = ""
             if values<0 :
-				texts["value"], texts["comment"] = ComputeValue(typeinfos[2], -values)
+                texts["value"], texts["comment"] = ComputeValue(typeinfos[2], -values)
             else:
-				texts["value"], texts["comment"] = ComputeValue(typeinfos[2], values)
+                texts["value"], texts["comment"] = ComputeValue(typeinfos[2], values)
             if index in variablelist:
                 texts["name"] = UnDigitName(FormatName(subentry_infos["name"]))
                 strDeclareHeader += "extern %(subIndexType)s %(name)s%(suffixe)s;\t\t/* Mapped at index 0x%(index)04X, subindex 0x00*/\n"%texts
                 if values>=0 :
-					mappedVariableContent += "%(subIndexType)s %(name)s%(suffixe)s = %(value)s;\t\t/* Mapped at index 0x%(index)04X, subindex 0x00 */\n"%texts
+                    mappedVariableContent += "%(subIndexType)s %(name)s%(suffixe)s = %(value)s;\t\t/* Mapped at index 0x%(index)04X, subindex 0x00 */\n"%texts
                 else:
-					mappedVariableContent += "%(subIndexType)s %(name)s%(suffixe)s = -%(value)s;\t\t/* Mapped at index 0x%(index)04X, subindex 0x00 */\n"%texts
+                    mappedVariableContent += "%(subIndexType)s %(name)s%(suffixe)s = -%(value)s;\t\t/* Mapped at index 0x%(index)04X, subindex 0x00 */\n"%texts
             else:
                 strIndex += "                    %(subIndexType)s %(NodeName)s_obj%(index)04X%(suffixe)s = %(value)s;%(comment)s\n"%texts
             values = [values]
@@ -299,7 +299,7 @@ def GenerateFileContent(Node, headerfilepath, pointers_dict = {}):
                 # Entry type is RECORD
                 for subIndex, value in enumerate(values):
                     texts["subIndex"] = subIndex
-		    params_infos = Node.GetParamsEntry(index,subIndex)
+                    params_infos = Node.GetParamsEntry(index,subIndex)
                     if subIndex > 0:
                         subentry_infos = Node.GetSubentryInfos(index, subIndex)
                         typename = GetTypeName(Node, subentry_infos["type"])
@@ -310,9 +310,9 @@ def GenerateFileContent(Node, headerfilepath, pointers_dict = {}):
 
                         if typeinfos[1] is not None:
                             if params_infos["buffer_size"] != "": 
-			          texts["suffixe"] = "[%s]"%params_infos["buffer_size"]
-		            else:
-			       texts["suffixe"] = "[%d]"%typeinfos[1]
+                                texts["suffixe"] = "[%s]"%params_infos["buffer_size"]
+                            else:
+                                texts["suffixe"] = "[%d]"%typeinfos[1]
                         else:
                             texts["suffixe"] = ""
                         texts["value"], texts["comment"] = ComputeValue(typeinfos[2], value)
@@ -344,7 +344,7 @@ def GenerateFileContent(Node, headerfilepath, pointers_dict = {}):
         strIndex += "                    const CONSTSTORE subindex %(NodeName)s_Index%(index)04X[] = \n                     {\n"%texts
         for subIndex in range(len(values)):
             subentry_infos = Node.GetSubentryInfos(index, subIndex)
-	    params_infos = Node.GetParamsEntry(index,subIndex)
+            params_infos = Node.GetParamsEntry(index,subIndex)
             if subIndex < len(values) - 1:
                 sep = ","
             else:
@@ -375,8 +375,8 @@ def GenerateFileContent(Node, headerfilepath, pointers_dict = {}):
                     name = "%s_obj%04X_%s"%(texts["NodeName"], texts["index"], FormatName(subentry_infos["name"]))
             if typeinfos[2] == "visible_string":
                 if params_infos["buffer_size"] != "":
-		  sizeof = params_infos["buffer_size"]
-		else:
+                    sizeof = params_infos["buffer_size"]
+                else:
                   sizeof = str(max(len(values[subIndex]), default_string_size))
             elif typeinfos[2] == "domain":
                 sizeof = str(len(values[subIndex]))
@@ -558,7 +558,7 @@ $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
 $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
 */
 """%texts
-    contentlist = indexContents.keys()
+    contentlist = list(indexContents.keys())
     contentlist.sort()
     for index in contentlist:
         fileContent += indexContents[index]
@@ -644,6 +644,6 @@ def GenerateFile(filepath, node, pointers_dict = {}):
         WriteFile(filepath, content)
         WriteFile(headerfilepath, header)
         return None
-    except ValueError, message:
+    except ValueError as message:
         return _("Unable to Generate C File\n%s")%message
 

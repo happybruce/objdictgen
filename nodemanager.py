@@ -21,9 +21,9 @@
 #License along with this library; if not, write to the Free Software
 #Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
-from gnosis.xml.pickle import *
-from gnosis.xml.pickle.util import setParanoia
-setParanoia(0)
+# from gnosis.xml.pickle import *
+# from gnosis.xml.pickle.util import setParanoia
+# setParanoia(0)
 
 from node import *
 import eds_utils, gen_cfile
@@ -211,7 +211,7 @@ class NodeManager:
                     # Charging DS-302 profile if choosen by user
                     if os.path.isfile(DS302Path):
                         try:
-                            execfile(DS302Path)
+                            exec(compile(open(DS302Path, "rb").read(), DS302Path, 'exec'))
                             self.CurrentNode.SetDS302Profile(Mapping)
                             self.CurrentNode.ExtendSpecificMenu(AddMenuEntries)
                         except:
@@ -233,7 +233,7 @@ class NodeManager:
                 for comm, mapping in [(0x1400, 0x1600),(0x1800, 0x1A00)]:
                     firstparamindex = self.GetLineFromIndex(comm)
                     firstmappingindex = self.GetLineFromIndex(mapping)
-                    AddIndexList.extend(range(firstparamindex, firstparamindex + 4))
+                    AddIndexList.extend(list(range(firstparamindex, firstparamindex + 4)))
                     for idx in range(firstmappingindex, firstmappingindex + 4):
                         AddIndexList.append(idx)
                         AddSubIndexList.append((idx, 8))
@@ -255,7 +255,7 @@ class NodeManager:
         if profile != "None":
             # Try to charge the profile given
             try:
-                execfile(filepath)
+                exec(compile(open(filepath, "rb").read(), filepath, 'exec'))
                 node.SetProfileName(profile)
                 node.SetProfile(Mapping)
                 node.SetSpecificMenu(AddMenuEntries)
@@ -313,8 +313,8 @@ class NodeManager:
         if self.NodeIndex in self.UndoBuffers and (self.UndoBuffers[self.NodeIndex].IsCurrentSaved() or ignore):
             self.RemoveNodeBuffer(self.NodeIndex)
             if len(self.UndoBuffers) > 0:
-                previousindexes = [idx for idx in self.UndoBuffers.keys() if idx < self.NodeIndex]
-                nextindexes = [idx for idx in self.UndoBuffers.keys() if idx > self.NodeIndex]
+                previousindexes = [idx for idx in list(self.UndoBuffers.keys()) if idx < self.NodeIndex]
+                nextindexes = [idx for idx in list(self.UndoBuffers.keys()) if idx > self.NodeIndex]
                 if len(previousindexes) > 0:
                     previousindexes.sort()
                     self.NodeIndex = previousindexes[-1]
@@ -732,7 +732,7 @@ class NodeManager:
                     node.SetParamsEntry(index, subIndex, save = value)
                 elif name == "comment":
                     node.SetParamsEntry(index, subIndex, comment = value)
-		elif name == "buffer_size":
+            elif name == "buffer_size":
                     node.SetParamsEntry(index, subIndex, buffer_size = value)
             else:
                 if editor == "type":
@@ -741,7 +741,7 @@ class NodeManager:
                     node.UpdateMapVariable(index, subIndex, size)
                 elif editor in ["access","raccess"]:
                     dic = {}
-                    for abbrev,access in AccessType.iteritems():
+                    for abbrev,access in AccessType.items():
                         dic[access] = abbrev
                     value = dic[value]
                     if editor == "raccess" and not node.IsMappingEntry(index):
@@ -800,7 +800,7 @@ class NodeManager:
 
     def OneFileHasChanged(self):
         result = False
-        for buffer in self.UndoBuffers.values():
+        for buffer in list(self.UndoBuffers.values()):
             result |= not buffer.IsCurrentSaved()
         return result
 
@@ -808,7 +808,7 @@ class NodeManager:
         return len(self.UndoBuffers)
 
     def GetBufferIndexes(self):
-        return self.UndoBuffers.keys()
+        return list(self.UndoBuffers.keys())
 
     def LoadCurrentPrevious(self):
         self.CurrentNode = self.UndoBuffers[self.NodeIndex].Previous().Copy()
@@ -824,7 +824,7 @@ class NodeManager:
         return self.NodeIndex
 
     def ChangeCurrentNode(self, index):
-        if index in self.UndoBuffers.keys():
+        if index in list(self.UndoBuffers.keys()):
             self.NodeIndex = index
             self.CurrentNode = self.UndoBuffers[self.NodeIndex].Current().Copy()
     
@@ -840,7 +840,7 @@ class NodeManager:
         return self.GetFilename(self.NodeIndex)
     
     def GetAllFilenames(self):
-        indexes = self.UndoBuffers.keys()
+        indexes = list(self.UndoBuffers.keys())
         indexes.sort()
         return [self.GetFilename(idx) for idx in indexes]
     
@@ -875,7 +875,7 @@ class NodeManager:
 
     def GetCurrentCommunicationLists(self):
         list = []
-        for index in MappingDictionary.iterkeys():
+        for index in MappingDictionary.keys():
             if 0x1000 <= index < 0x1200:
                 list.append(index)
         return self.GetProfileLists(MappingDictionary, list)
@@ -891,7 +891,7 @@ class NodeManager:
         exclusionlist = []
         for name, list in self.CurrentNode.GetSpecificMenu():
             exclusionlist.extend(list)
-        for index in mappingdictionary.iterkeys():
+        for index in mappingdictionary.keys():
             if index not in exclusionlist:
                 validlist.append(index)
         return self.GetProfileLists(mappingdictionary, validlist)
@@ -1005,10 +1005,10 @@ class NodeManager:
                 good &= min <= index <= max
             if good:
                 validchoices.append((menu, None))
-        list = [index for index in MappingDictionary.keys() if index >= 0x1000]
+        list = [index for index in list(MappingDictionary.keys()) if index >= 0x1000]
         profiles = self.CurrentNode.GetMappings(False)
         for profile in profiles:
-            list.extend(profile.keys())
+            list.extend(list(profile.keys()))
         list.sort()
         for index in list:
             if min <= index <= max and not self.CurrentNode.IsEntry(index) and index not in exclusionlist:
@@ -1039,17 +1039,17 @@ class NodeManager:
                 data.append({"value" : values})
                 data[-1].update(params)
             for i, dic in enumerate(data):
-		if dic["buffer_size"] and dic["buffer_size"].isdigit() is not True:
-		   dic["buffer_size"] = ""
+                if dic["buffer_size"] and dic["buffer_size"].isdigit() is not True:
+                    dic["buffer_size"] = ""
                 infos = node.GetSubentryInfos(index, i)
-		if infos["name"] == "Number of Entries":
-		    dic["buffer_size"] = ""
+                if infos["name"] == "Number of Entries":
+                    dic["buffer_size"] = ""
                 dic["subindex"] = "0x%02X"%i
                 dic["name"] = infos["name"]
                 dic["type"] = node.GetTypeName(infos["type"])
                 if dic["type"] is None:
                     dic["type"] = "Unknown"
-		    dic["buffer_size"] = ""
+                    dic["buffer_size"] = ""
                 dic["access"] = AccessType[infos["access"]]
                 dic["save"] = OptionType[dic["save"]]
                 editor = {"subindex" : None, "name" : None, 
@@ -1090,12 +1090,12 @@ class NodeManager:
                         elif dic["type"] == "BOOLEAN":
                             editor["value"] = "bool"
                             dic["value"] = BoolType[dic["value"]]
-			    dic["buffer_size"] = ""
+                            dic["buffer_size"] = ""
                         result = type_model.match(dic["type"])
                         if result:
                             values = result.groups()
                             if values[0] == "UNSIGNED":
-				dic["buffer_size"] = ""
+                                dic["buffer_size"] = ""
                                 try:
                                     format = "0x%0" + str(int(values[1])/4) + "X"
                                     dic["value"] = format%dic["value"]
@@ -1104,10 +1104,10 @@ class NodeManager:
                                 editor["value"] = "string"
                             if values[0] == "INTEGER":
                                 editor["value"] = "number"
-				dic["buffer_size"] = ""
+                                dic["buffer_size"] = ""
                             elif values[0] == "REAL":
                                 editor["value"] = "float"
-				dic["buffer_size"] = ""
+                                dic["buffer_size"] = ""
                             elif values[0] in ["VISIBLE_STRING", "OCTET_STRING"]:
                                 editor["length"] = values[0]
                         result = range_model.match(dic["type"])
@@ -1116,7 +1116,7 @@ class NodeManager:
                             if values[0] in ["UNSIGNED", "INTEGER", "REAL"]:
                                 editor["min"] = values[2]
                                 editor["max"] = values[3]
-				dic["buffer_size"] = ""
+                                dic["buffer_size"] = ""
                 editors.append(editor)
             return data, editors
         else:

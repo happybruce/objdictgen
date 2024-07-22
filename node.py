@@ -21,7 +21,7 @@
 #License along with this library; if not, write to the Free Software
 #Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
-import cPickle
+import pickle
 from types import *
 import re
 
@@ -238,7 +238,7 @@ Return the index of the typename given by searching in mappingdictionary
 """
 def FindTypeIndex(typename, mappingdictionary):
     testdic = {}
-    for index, values in mappingdictionary.iteritems():
+    for index, values in mappingdictionary.items():
         if index < 0x1000:
             testdic[values["name"]] = index
     if typename in testdic:
@@ -266,7 +266,7 @@ Return the list of types defined in mappingdictionary
 """
 def FindTypeList(mappingdictionary):
     list = []
-    for index in mappingdictionary.keys():
+    for index in list(mappingdictionary.keys()):
         if index < 0x1000:
             list.append(mappingdictionary[index]["name"])
     return list
@@ -340,7 +340,7 @@ Return the list of variables that can be mapped defined in mappingdictionary
 """
 def FindMapVariableList(mappingdictionary, Node, compute=True):
     list = []
-    for index in mappingdictionary.iterkeys():
+    for index in mappingdictionary.keys():
         if Node.IsEntry(index):
             for subIndex, values in enumerate(mappingdictionary[index]["values"]):
                 if mappingdictionary[index]["values"][subIndex]["pdo"]:
@@ -365,7 +365,7 @@ Return the list of mandatory indexes defined in mappingdictionary
 """
 def FindMandatoryIndexes(mappingdictionary):
     list = []
-    for index in mappingdictionary.iterkeys():
+    for index in mappingdictionary.keys():
         if index >= 0x1000 and mappingdictionary[index]["need"]:
             list.append(index)
     return list
@@ -378,7 +378,7 @@ def FindIndex(index, mappingdictionary):
     if index in mappingdictionary:
         return index
     else:
-        listpluri = [idx for idx in mappingdictionary.keys() if mappingdictionary[idx]["struct"] & OD_IdenticalIndexes]
+        listpluri = [idx for idx in list(mappingdictionary.keys()) if mappingdictionary[idx]["struct"] & OD_IdenticalIndexes]
         listpluri.sort()
         for idx in listpluri:
             nb_max = mappingdictionary[idx]["nbmax"]
@@ -597,7 +597,7 @@ class Node:
             if subIndex == None or type(self.Dictionary[index]) != ListType and subIndex == 0:
                 if comment != None:
                     self.ParamsDictionary[index]["comment"] = comment
-		if buffer_size != None:
+                if buffer_size != None:
                     self.ParamsDictionary[index]["buffer_size"] = buffer_size
                 if save != None:
                     self.ParamsDictionary[index]["save"] = save
@@ -609,7 +609,7 @@ class Node:
                     self.ParamsDictionary[index][subIndex] = {}
                 if comment != None:
                     self.ParamsDictionary[index][subIndex]["comment"] = comment
-		if buffer_size != None:
+                if buffer_size != None:
                     self.ParamsDictionary[index][subIndex]["buffer_size"] = buffer_size
                 if save != None:
                     self.ParamsDictionary[index][subIndex]["save"] = save
@@ -842,7 +842,7 @@ class Node:
         if subIndex:
             model += subIndex << 8
             mask += 0xFF << 8
-        for i in self.Dictionary.iterkeys():
+        for i in self.Dictionary.keys():
             if 0x1600 <= i <= 0x17FF or 0x1A00 <= i <= 0x1BFF:
                 for j,value in enumerate(self.Dictionary[i]):
                     if (value & mask) == model:
@@ -854,7 +854,7 @@ class Node:
         if subIndex:
             model += subIndex << 8
             mask = 0xFF << 8
-        for i in self.Dictionary.iterkeys():
+        for i in self.Dictionary.keys():
             if 0x1600 <= i <= 0x17FF or 0x1A00 <= i <= 0x1BFF:
                 for j,value in enumerate(self.Dictionary[i]):
                     if (value & mask) == model:
@@ -880,13 +880,13 @@ class Node:
     Return a copy of the node
     """
     def Copy(self):
-        return cPickle.loads(cPickle.dumps(self))
+        return pickle.loads(pickle.dumps(self))
 
     """
     Return a sorted list of indexes in Object Dictionary
     """
     def GetIndexes(self):
-        listindex = self.Dictionary.keys()
+        listindex = list(self.Dictionary.keys())
         listindex.sort()
         return listindex
 
@@ -894,11 +894,11 @@ class Node:
     Print the Dictionary values
     """
     def Print(self):
-        print self.PrintString()
+        print(self.PrintString())
     
     def PrintString(self):
         result = ""
-        listindex = self.Dictionary.keys()
+        listindex = list(self.Dictionary.keys())
         listindex.sort()
         for index in listindex:
             name = self.GetEntryName(index)

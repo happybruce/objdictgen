@@ -173,7 +173,7 @@ class CommunicationDialog(wx.Dialog):
         self.PossibleIndexes.Clear()
         self.CurrentIndexes.Clear()
         self.AllList = []
-        for index in self.IndexDictionary.iterkeys():
+        for index in self.IndexDictionary.keys():
             if index not in self.CurrentList:
                 self.AllList.append(index)
         self.AllList.sort()
@@ -580,7 +580,7 @@ class UserTypeDialog(wx.Dialog):
     def SetTypeList(self, typedic, type = None):
         self.Type.Clear()
         list = []
-        for index, (name, valuetype) in typedic.iteritems():
+        for index, (name, valuetype) in typedic.items():
             self.TypeDictionary[name] = (index, valuetype)
             list.append((index, name))
         list.sort()
@@ -1263,7 +1263,7 @@ class AddSlaveDialog(wx.Dialog):
     def RefreshEDSFile(self):
         selection = self.EDSFile.GetStringSelection()
         self.EDSFile.Clear()
-        for option in self.NodeList.EDSNodes.keys():
+        for option in list(self.NodeList.EDSNodes.keys()):
             self.EDSFile.Append(option)
         if self.EDSFile.FindString(selection) != wx.NOT_FOUND:
             self.EDSFile.SetStringSelection(selection)

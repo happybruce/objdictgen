@@ -30,8 +30,8 @@ __version__ = "$Revision: 1.27 $"
 
 if __name__ == '__main__':
     def usage():
-        print _("\nUsage of networkedit.py :")
-        print "\n   %s [Projectpath]\n"%sys.argv[0]
+        print(_("\nUsage of networkedit.py :"))
+        print("\n   %s [Projectpath]\n"%sys.argv[0])
 
     try:
         opts, args = getopt.getopt(sys.argv[1:], "h", ["help"])
@@ -630,7 +630,7 @@ def get_last_traceback(tb):
 
 
 def format_namespace(d, indent='    '):
-    return '\n'.join(['%s%s: %s' % (indent, k, repr(v)[:10000]) for k, v in d.iteritems()])
+    return '\n'.join(['%s%s: %s' % (indent, k, repr(v)[:10000]) for k, v in d.items()])
 
 
 ignored_exceptions = [] # a problem with a line in a module is only reported once per session
@@ -668,7 +668,7 @@ def AddExceptHook(path, app_version='[No version]'):#, ignored_exceptions=[]):
                         info['self'] = format_namespace(exception_locals['self'].__dict__)
                 
                 output = open(path+os.sep+"bug_report_"+info['date'].replace(':','-').replace(' ','_')+".txt",'w')
-                lst = info.keys()
+                lst = list(info.keys())
                 lst.sort()
                 for a in lst:
                     output.write(a+":\n"+str(info[a])+"\n\n")

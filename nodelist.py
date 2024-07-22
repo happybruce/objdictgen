@@ -84,12 +84,12 @@ class NodeList:
         return self.SlaveNodes[idx]["Name"]
     
     def GetSlaveNames(self):
-        nodes = self.SlaveNodes.keys()
+        nodes = list(self.SlaveNodes.keys())
         nodes.sort()
         return ["0x%2.2X %s"%(idx, self.SlaveNodes[idx]["Name"]) for idx in nodes]
     
     def GetSlaveIDs(self):
-        nodes = self.SlaveNodes.keys()
+        nodes = list(self.SlaveNodes.keys())
         nodes.sort()
         return nodes
         
@@ -159,7 +159,7 @@ class NodeList:
             return node
     
     def AddSlaveNode(self, nodeName, nodeID, eds):
-        if eds in self.EDSNodes.keys():
+        if eds in list(self.EDSNodes.keys()):
             slave = {"Name" : nodeName, "EDS" : eds, "Node" : self.EDSNodes[eds]}
             self.SlaveNodes[nodeID] = slave
             self.Changed = True
@@ -168,7 +168,7 @@ class NodeList:
             return _("\"%s\" EDS file is not available")%eds
     
     def RemoveSlaveNode(self, index):
-        if index in self.SlaveNodes.keys():
+        if index in list(self.SlaveNodes.keys()):
             self.SlaveNodes.pop(index)
             self.Changed = True
             return None
@@ -184,7 +184,7 @@ class NodeList:
             result = self.Manager.OpenFileInCurrent(masterpath)
         else:
             result = self.Manager.CreateNewNode("MasterNode", 0x00, "master", "", "None", "", "heartbeat", ["DS302"])
-        if not isinstance(result, types.IntType):
+        if not isinstance(result, int):
             return result
         return None
     
@@ -213,13 +213,13 @@ class NodeList:
                     network = networks[0]
                     self.NetworkName = network["Name"]
                 if network:
-                    for nodeid, node in network["Nodes"].items():
+                    for nodeid, node in list(network["Nodes"].items()):
                         if node["Present"] == 1:
                             result = self.AddSlaveNode(node["Name"], nodeid, node["DCFName"])
                             if result != None:
                                 return result        
                 self.Changed = False
-            except SyntaxError, message:
+            except SyntaxError as message:
                 return _("Unable to load CPJ file\n%s")%message
         return None
     
@@ -239,7 +239,7 @@ class NodeList:
             return _("Fail to save node list")
     
     def GetSlaveNodeEntry(self, nodeid, index, subindex = None):
-        if nodeid in self.SlaveNodes.keys():
+        if nodeid in list(self.SlaveNodes.keys()):
             self.SlaveNodes[nodeid]["Node"].SetNodeID(nodeid)
             return self.SlaveNodes[nodeid]["Node"].GetEntry(index, subindex)
         else:
@@ -252,13 +252,13 @@ class NodeList:
         self.Manager.SetCurrentEntry(index, subindex, value)
     
     def GetOrderNumber(self, nodeid):
-        nodeindexes = self.SlaveNodes.keys()
+        nodeindexes = list(self.SlaveNodes.keys())
         nodeindexes.sort()
         return nodeindexes.index(nodeid) + 1
     
     def GetNodeByOrder(self, order):
         if order > 0:
-            nodeindexes = self.SlaveNodes.keys()
+            nodeindexes = list(self.SlaveNodes.keys())
             nodeindexes.sort()
             if order <= len(nodeindexes):
                 return self.SlaveNodes[nodeindexes[order - 1]]["Node"]
@@ -311,7 +311,7 @@ class NodeList:
                             validindexes.append((node.GetEntryName(index), index))
                     return validindexes
                 else:
-                    print _("Can't find node")
+                    print(_("Can't find node"))
         return []
     
     def GetCurrentEntryValues(self, index):
@@ -321,7 +321,7 @@ class NodeList:
                 node.SetNodeID(self.CurrentSelected)
                 return self.Manager.GetNodeEntryValues(node, index)
             else:
-                print _("Can't find node")
+                print(_("Can't find node"))
         return [], []
     
     def AddToMasterDCF(self, node_id, index, subindex, size, value):
@@ -342,13 +342,13 @@ if __name__ == "__main__":
     
     result = nodelist.LoadProject("/home/laurent/test_nodelist")
     if result != None:
-        print result
+        print(result)
     else:
-        print "MasterNode :"
+        print("MasterNode :")
         manager.CurrentNode.Print()
-        print 
-        for nodeid, node in nodelist.SlaveNodes.items():
-            print "SlaveNode name=%s id=0x%2.2X :"%(node["Name"], nodeid)
+        print() 
+        for nodeid, node in list(nodelist.SlaveNodes.items()):
+            print("SlaveNode name=%s id=0x%2.2X :"%(node["Name"], nodeid))
             node["Node"].Print()
-            print
+            print()
 
