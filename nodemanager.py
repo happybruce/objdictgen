@@ -1031,7 +1031,7 @@ class NodeManager:
             editors = []
             values = node.GetEntry(index, compute = False)
             params = node.GetParamsEntry(index)
-            if isinstance(values, ListType):
+            if isinstance(values, list):
                 for i, value in enumerate(values):
                     data.append({"value" : value})
                     data[-1].update(params[i])      
@@ -1056,7 +1056,7 @@ class NodeManager:
                           "type" : None, "value" : None,
                           "access" : None, "save" : "option", 
                           "callback" : "option", "comment" : "string", "buffer_size" : "string"}
-                if isinstance(values, ListType) and i == 0:
+                if isinstance(values, list) and i == 0:
                     if 0x1600 <= index <= 0x17FF or 0x1A00 <= index <= 0x1C00:
                         editor["access"] = "raccess"
                 else:

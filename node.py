@@ -568,7 +568,7 @@ class Node:
             elif subIndex == 1:
                 self.Dictionary[index] = [value]
                 return True
-        elif subIndex > 0 and type(self.Dictionary[index]) == ListType and subIndex == len(self.Dictionary[index]) + 1:
+        elif subIndex > 0 and type(self.Dictionary[index]) == list and subIndex == len(self.Dictionary[index]) + 1:
             self.Dictionary[index].append(value)
             return True
         return False
@@ -582,7 +582,7 @@ class Node:
                 if value != None:
                     self.Dictionary[index] = value
                 return True
-            elif type(self.Dictionary[index]) == ListType and 0 < subIndex <= len(self.Dictionary[index]):
+            elif type(self.Dictionary[index]) == list and 0 < subIndex <= len(self.Dictionary[index]):
                 if value != None:
                     self.Dictionary[index][subIndex - 1] = value
                 return True
@@ -594,7 +594,7 @@ class Node:
         if index in self.Dictionary:
             if (comment != None or save != None or callback != None or buffer_size != None) and index not in self.ParamsDictionary:
                 self.ParamsDictionary[index] = {}
-            if subIndex == None or type(self.Dictionary[index]) != ListType and subIndex == 0:
+            if subIndex == None or type(self.Dictionary[index]) != list and subIndex == 0:
                 if comment != None:
                     self.ParamsDictionary[index]["comment"] = comment
                 if buffer_size != None:
@@ -604,7 +604,7 @@ class Node:
                 if callback != None:
                     self.ParamsDictionary[index]["callback"] = callback
                 return True
-            elif type(self.Dictionary[index]) == ListType and 0 <= subIndex <= len(self.Dictionary[index]):
+            elif type(self.Dictionary[index]) == list and 0 <= subIndex <= len(self.Dictionary[index]):
                 if (comment != None or save != None or callback != None or buffer_size != None) and subIndex not in self.ParamsDictionary[index]:
                     self.ParamsDictionary[index][subIndex] = {}
                 if comment != None:
@@ -630,7 +630,7 @@ class Node:
                 if index in self.ParamsDictionary:
                     self.ParamsDictionary.pop(index)
                 return True
-            elif type(self.Dictionary[index]) == ListType and subIndex == len(self.Dictionary[index]):
+            elif type(self.Dictionary[index]) == list and subIndex == len(self.Dictionary[index]):
                 self.Dictionary[index].pop(subIndex - 1)
                 if index in self.ParamsDictionary:
                     if subIndex in self.ParamsDictionary[index]:
@@ -661,7 +661,7 @@ class Node:
     def GetEntry(self, index, subIndex = None, compute = True):
         if index in self.Dictionary:
             if subIndex == None:
-                if type(self.Dictionary[index]) == ListType:
+                if type(self.Dictionary[index]) == list:
                     values = [len(self.Dictionary[index])]
                     for value in self.Dictionary[index]:
                         values.append(self.CompileValue(value, index, compute))
@@ -669,11 +669,11 @@ class Node:
                 else:
                     return self.CompileValue(self.Dictionary[index], index, compute)
             elif subIndex == 0:
-                if type(self.Dictionary[index]) == ListType:
+                if type(self.Dictionary[index]) == list:
                     return len(self.Dictionary[index])
                 else:
                     return self.CompileValue(self.Dictionary[index], index, compute)
-            elif type(self.Dictionary[index]) == ListType and 0 < subIndex <= len(self.Dictionary[index]):
+            elif type(self.Dictionary[index]) == list and 0 < subIndex <= len(self.Dictionary[index]):
                 return self.CompileValue(self.Dictionary[index][subIndex - 1], index, compute)
         return None
 
@@ -686,7 +686,7 @@ class Node:
             self.ParamsDictionary = {}
         if index in self.Dictionary:
             if subIndex == None:
-                if type(self.Dictionary[index]) == ListType:
+                if type(self.Dictionary[index]) == list:
                     if index in self.ParamsDictionary:
                         result = []
                         for i in range(len(self.Dictionary[index]) + 1):
@@ -702,12 +702,12 @@ class Node:
                     if index in self.ParamsDictionary:
                         result.update(self.ParamsDictionary[index])
                     return result
-            elif subIndex == 0 and type(self.Dictionary[index]) != ListType:
+            elif subIndex == 0 and type(self.Dictionary[index]) != list:
                 result = DefaultParams.copy()
                 if index in self.ParamsDictionary:
                     result.update(self.ParamsDictionary[index])
                 return result
-            elif type(self.Dictionary[index]) == ListType and 0 <= subIndex <= len(self.Dictionary[index]):
+            elif type(self.Dictionary[index]) == list and 0 <= subIndex <= len(self.Dictionary[index]):
                 result = DefaultParams.copy()
                 if index in self.ParamsDictionary and subIndex in self.ParamsDictionary[index]:
                     result.update(self.ParamsDictionary[index][subIndex])
@@ -903,7 +903,7 @@ class Node:
         for index in listindex:
             name = self.GetEntryName(index)
             values = self.Dictionary[index]
-            if isinstance(values, ListType):
+            if isinstance(values, list):
                 result += "%04X (%s):\n"%(index, name)
                 for subidx, value in enumerate(values):
                     subentry_infos = self.GetSubentryInfos(index, subidx + 1)
@@ -922,11 +922,11 @@ class Node:
                             value += (" %0"+"%d"%(size * 2)+"X")%BE_to_LE(data[i+7:i+7+size])
                             i += 7 + size
                             count += 1
-                    elif isinstance(value, IntType):
+                    elif isinstance(value, int):
                         value = "%X"%value
                     result += "%04X %02X (%s): %s\n"%(index, subidx+1, subentry_infos["name"], value)
             else:
-                if isinstance(values, IntType):
+                if isinstance(values, int):
                     values = "%X"%values
                 result += "%04X (%s): %s\n"%(index, name, values)
         return result

@@ -799,64 +799,64 @@ class NodeInfosDialog(wx.Dialog):
  ID_CREATENODEDIALOGSTATICTEXT6, ID_CREATENODEDIALOGSTATICTEXT7,
  ID_CREATENODEDIALOGSTOREEDS, ID_CREATENODEDIALOGDESCRIPTION,
  ID_CREATENODEDIALOGTYPE, 
-] = [wx.NewId() for _init_ctrls in range(21)]
+] = [wx.NewIdRef() for _init_ctrls in range(21)]
 
 class CreateNodeDialog(wx.Dialog):
     def _init_coll_flexGridSizer1_Items(self, parent):
-        parent.AddSizer(self.MainSizer, 0, border=20, flag=wx.GROW|wx.TOP|wx.LEFT|wx.RIGHT)
-        parent.AddSizer(self.ButtonSizer, 0, border=20, flag=wx.ALIGN_RIGHT|wx.BOTTOM|wx.LEFT|wx.RIGHT)
+        parent.Add(self.MainSizer, 0, border=20, flag=wx.GROW|wx.TOP|wx.LEFT|wx.RIGHT)
+        parent.Add(self.ButtonSizer, 0, border=20, flag=wx.ALIGN_RIGHT|wx.BOTTOM|wx.LEFT|wx.RIGHT)
 
     def _init_coll_flexGridSizer1_Growables(self, parent):
         parent.AddGrowableCol(0)
         parent.AddGrowableRow(0)
 
     def _init_coll_MainSizer_Items(self, parent):
-        parent.AddSizer(self.TopBoxSizer, 0, border=0, flag=wx.GROW)
-        parent.AddWindow(self.staticText7, 0, border=0, flag=wx.GROW)
-        parent.AddWindow(self.Description, 0, border=0, flag=wx.GROW)
+        parent.Add(self.TopBoxSizer, 0, border=0, flag=wx.GROW)
+        parent.Add(self.staticText7, 0, border=0, flag=wx.GROW)
+        parent.Add(self.Description, 0, border=0, flag=wx.GROW)
 
     def _init_coll_MainSizer_Growables(self, parent):
         parent.AddGrowableCol(0)
     
     def _init_coll_TopBoxSizer_Items(self, parent):
-        parent.AddSizer(self.LeftBoxSizer, 1, border=10, flag=wx.GROW|wx.RIGHT)
-        parent.AddSizer(self.RightGridSizer, 1, border=10, flag=wx.GROW|wx.LEFT)
+        parent.Add(self.LeftBoxSizer, 1, border=10, flag=wx.GROW|wx.RIGHT)
+        parent.Add(self.RightGridSizer, 1, border=10, flag=wx.GROW|wx.LEFT)
     
     def _init_coll_LeftBoxSizer_Items(self, parent):
-        parent.AddWindow(self.staticText1, 0, border=5, flag=wx.GROW|wx.BOTTOM)
-        parent.AddWindow(self.Type, 0, border=10, flag=wx.GROW|wx.BOTTOM)
-        parent.AddWindow(self.staticText2, 0, border=5, flag=wx.GROW|wx.BOTTOM)
-        parent.AddWindow(self.NodeName, 0, border=10, flag=wx.GROW|wx.BOTTOM)
-        parent.AddWindow(self.staticText3, 0, border=5, flag=wx.GROW|wx.BOTTOM)
-        parent.AddWindow(self.NodeID, 0, border=10, flag=wx.GROW|wx.BOTTOM)
-        parent.AddWindow(self.staticText4, 0, border=5, flag=wx.GROW|wx.BOTTOM)
-        parent.AddWindow(self.Profile, 0, border=20, flag=wx.GROW|wx.BOTTOM)
+        parent.Add(self.staticText1, 0, border=5, flag=wx.GROW|wx.BOTTOM)
+        parent.Add(self.Type, 0, border=10, flag=wx.GROW|wx.BOTTOM)
+        parent.Add(self.staticText2, 0, border=5, flag=wx.GROW|wx.BOTTOM)
+        parent.Add(self.NodeName, 0, border=10, flag=wx.GROW|wx.BOTTOM)
+        parent.Add(self.staticText3, 0, border=5, flag=wx.GROW|wx.BOTTOM)
+        parent.Add(self.NodeID, 0, border=10, flag=wx.GROW|wx.BOTTOM)
+        parent.Add(self.staticText4, 0, border=5, flag=wx.GROW|wx.BOTTOM)
+        parent.Add(self.Profile, 0, border=20, flag=wx.GROW|wx.BOTTOM)
 
     def _init_coll_RightGridSizer_Items(self, parent):
-        parent.AddSizer(self.RightTopGridSizer, 0, border=0, flag=wx.GROW)
-        parent.AddWindow(self.Spacer, 0, border=0, flag=wx.GROW)
-        parent.AddSizer(self.RightBottomGridSizer, 0, border=0, flag=wx.GROW)
+        parent.Add(self.RightTopGridSizer, 0, border=0, flag=wx.GROW)
+        parent.Add(self.Spacer, 0, border=0, flag=wx.GROW)
+        parent.Add(self.RightBottomGridSizer, 0, border=0, flag=wx.GROW)
 
     def _init_coll_RightGridSizer_Growables(self, parent):
         parent.AddGrowableCol(0)
         parent.AddGrowableRow(1)
 
     def _init_coll_RightTopGridSizer_Items(self, parent):
-        parent.AddWindow(self.staticText5, 0, border=0, flag=wx.GROW)
-        parent.AddWindow(self.NMT_None, 0, border=0, flag=wx.GROW)
-        parent.AddWindow(self.NMT_NodeGuarding, 0, border=0, flag=wx.GROW)
-        parent.AddWindow(self.NMT_Heartbeat, 0, border=0, flag=wx.GROW)
+        parent.Add(self.staticText5, 0, border=0, flag=wx.GROW)
+        parent.Add(self.NMT_None, 0, border=0, flag=wx.GROW)
+        parent.Add(self.NMT_NodeGuarding, 0, border=0, flag=wx.GROW)
+        parent.Add(self.NMT_Heartbeat, 0, border=0, flag=wx.GROW)
         
     def _init_coll_RightTopGridSizer_Growables(self, parent):
         parent.AddGrowableCol(0)
         
     def _init_coll_RightBottomGridSizer_Items(self, parent):
-        parent.AddWindow(self.staticText6, 0, border=0, flag=wx.GROW)
-        parent.AddWindow(self.DS302, 0, border=0, flag=wx.GROW)
-        parent.AddWindow(self.GenSYNC, 0, border=0, flag=wx.GROW)
-        parent.AddWindow(self.Emergency, 0, border=0, flag=wx.GROW)
-        parent.AddWindow(self.SaveConfig, 0, border=0, flag=wx.GROW)
-        parent.AddWindow(self.StoreEDS, 0, border=0, flag=wx.GROW)
+        parent.Add(self.staticText6, 0, border=0, flag=wx.GROW)
+        parent.Add(self.DS302, 0, border=0, flag=wx.GROW)
+        parent.Add(self.GenSYNC, 0, border=0, flag=wx.GROW)
+        parent.Add(self.Emergency, 0, border=0, flag=wx.GROW)
+        parent.Add(self.SaveConfig, 0, border=0, flag=wx.GROW)
+        parent.Add(self.StoreEDS, 0, border=0, flag=wx.GROW)
         
     def _init_coll_RightBottomGridSizer_Growables(self, parent):
         parent.AddGrowableCol(0)
@@ -990,7 +990,7 @@ class CreateNodeDialog(wx.Dialog):
               size=wx.Size(0, 0), style=wx.TAB_TRAVERSAL)
 
         self.ButtonSizer = self.CreateButtonSizer(buttons)
-        self.Bind(wx.EVT_BUTTON, self.OnOK, id=self.ButtonSizer.GetAffirmativeButton().GetId())
+        self.Bind(wx.EVT_BUTTON, self.OnOK, id=wx.ID_OK) #id=self.ButtonSizer.GetAffirmativeButton().GetId())
         
         self._init_sizers()
 
@@ -1081,7 +1081,7 @@ class CreateNodeDialog(wx.Dialog):
 
     def OnProfileChoice(self, event):
         if self.Profile.GetStringSelection() == _("Other"):
-            dialog = wx.FileDialog(self, _("Choose a file"), self.Directory, "",  _("OD Profile files (*.prf)|*.prf|All files|*.*"), wx.OPEN|wx.CHANGE_DIR)
+            dialog = wx.FileDialog(self, _("Choose a file"), self.Directory, "",  _("OD Profile files (*.prf)|*.prf|All files|*.*"), wx.FD_OPEN|wx.FD_CHANGE_DIR)
             dialog.ShowModal()
             filepath = dialog.GetPath()
             dialog.Destroy()

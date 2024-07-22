@@ -343,7 +343,7 @@ class objdictedit(wx.Frame, NodeEditorTemplate):
         if self.ModeSolo:
             for filepath in filesOpen:
                 result = self.Manager.OpenFileInCurrent(os.path.abspath(filepath))
-                if isinstance(result, (IntType, LongType)):
+                if isinstance(result, int):
                     new_editingpanel = EditingPanel(self.FileOpened, self, self.Manager)
                     new_editingpanel.SetIndex(result)
                     self.FileOpened.AddPage(new_editingpanel, "")
@@ -542,7 +542,7 @@ class objdictedit(wx.Frame, NodeEditorTemplate):
             NMT = dialog.GetNMTManagement()
             options = dialog.GetOptions()
             result = self.Manager.CreateNewNode(name, id, nodetype, description, profile, filepath, NMT, options)
-            if isinstance(result, (IntType, LongType)):
+            if isinstance(result, int):
                 new_editingpanel = EditingPanel(self.FileOpened, self, self.Manager)
                 new_editingpanel.SetIndex(result)
                 self.FileOpened.AddPage(new_editingpanel, "")
@@ -570,7 +570,7 @@ class objdictedit(wx.Frame, NodeEditorTemplate):
             filepath = dialog.GetPath()
             if os.path.isfile(filepath):
                 result = self.Manager.OpenFileInCurrent(filepath)
-                if isinstance(result, (IntType, LongType)):
+                if isinstance(result, int):
                     new_editingpanel = EditingPanel(self.FileOpened, self, self.Manager)
                     new_editingpanel.SetIndex(result)
                     self.FileOpened.AddPage(new_editingpanel, "")
@@ -665,7 +665,7 @@ class objdictedit(wx.Frame, NodeEditorTemplate):
             filepath = dialog.GetPath()
             if os.path.isfile(filepath):
                 result = self.Manager.ImportCurrentFromEDSFile(filepath)
-                if isinstance(result, (IntType, LongType)):
+                if isinstance(result, int):
                     new_editingpanel = EditingPanel(self.FileOpened, self, self.Manager)
                     new_editingpanel.SetIndex(result)
                     self.FileOpened.AddPage(new_editingpanel, "")
@@ -752,9 +752,10 @@ def Display_Exception_Dialog(e_type,e_value,e_tb):
         trcbck_lst.append(trcbck)
         
     # Allow clicking....
-    cap = wx.Window_GetCapture()
+    # cap = wx.Window_GetCapture() TODO:
+    cap = wx.Window.HasCapture()
     if cap:
-        cap.ReleaseMouse()
+        cap.Window.ReleaseMouse()
 
     dlg = wx.SingleChoiceDialog(None, 
         _("""

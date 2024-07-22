@@ -50,8 +50,8 @@ BOOL_TRANSLATE = {True : "1", False : "0"}
 ACCESS_TRANSLATE = {"RO" : "ro", "WO" : "wo", "RW" : "rw", "RWR" : "rw", "RWW" : "rw", "CONST" : "const"}
 
 # Function for verifying data values
-is_integer = lambda x: type(x) in (IntType, LongType)
-is_string = lambda x: type(x) in (StringType, UnicodeType)
+is_integer = lambda x: type(x) is int
+is_string = lambda x: type(x) is str
 is_boolean = lambda x: x in (0, 1)
 
 # Define checking of value for each attribute
@@ -406,7 +406,7 @@ def VerifyValue(values, section_name, param):
             elif values["DATATYPE"] == 0x01:
                 values[param.upper()] = {0 : False, 1 : True}[values[param.upper()]]
             else:
-                if not isinstance(values[param.upper()], (IntType, LongType)) and values[param.upper()].upper().find("$NODEID") == -1:
+                if not isinstance(values[param.upper()], int) and values[param.upper()].upper().find("$NODEID") == -1:
                     raise
         except:
             raise SyntaxError(_("Error on section \"[%s]\":\n%s incompatible with DataType")%(section_name, param))
@@ -528,7 +528,7 @@ def GenerateFileContent(Node, filepath):
         # Define section name
         text = "\n[%X]\n"%entry
         # If there is only one value, it's a VAR entry
-        if type(values) != ListType:
+        if type(values) != list:
             # Extract the informations of the first subindex
             subentry_infos = Node.GetSubentryInfos(entry, 0)
             # Generate EDS informations for the entry

@@ -199,11 +199,11 @@ def GenerateFileContent(Node, headerfilepath, pointers_dict = {}):
             strIndex += "\n/* index 0x%(index)04X :   %(EntryName)s. */\n"%texts
         
         # Entry type is VAR
-        if not isinstance(values, ListType):
+        if not isinstance(values, list):
             subentry_infos = Node.GetSubentryInfos(index, 0)
             typename = GetTypeName(Node, subentry_infos["type"])
             typeinfos = GetValidTypeInfos(typename, [values])
-            if typename is "DOMAIN" and index in variablelist:
+            if typename == "DOMAIN" and index in variablelist:
                 if not typeinfos[1]:
                     raise ValueError(_("\nDomain variable not initialized\nindex : 0x%04X\nsubindex : 0x00")%index)
             texts["subIndexType"] = typeinfos[0]
@@ -276,7 +276,7 @@ def GenerateFileContent(Node, headerfilepath, pointers_dict = {}):
                             if subIndex == len(values)-1:
                                 sep = ""
                             value, comment = ComputeValue(typeinfos[2], value)
-                            if len(value) is 2 and typename is "DOMAIN":
+                            if len(value) == 2 and typename == "DOMAIN":
                                 raise ValueError("\nDomain variable not initialized\nindex : 0x%04X\nsubindex : 0x%02X"%(index, subIndex))
                             if subentry_infos["access"].upper() == "CONST" and typeinfos[2] == "visible_string":
                                 mappedVariableContent += "    (const CONSTSTORE char[]){%s}%s%s\n"%(value, sep, comment)
