@@ -92,14 +92,14 @@ class NodeEditorTemplate:
     def RefreshProfileMenu(self):
         if self.EDITMENU_ID is not None:
             profile = self.Manager.GetCurrentProfileName()
-            edititem = self.Frame.EditMenu.FindItemById(self.EDITMENU_ID)
+            edititem = self.Frame.EditMenu.FindItemById(self.EDITMENU_ID) # type is wx.MenuItem
             if edititem:
                 length = self.Frame.AddMenu.GetMenuItemCount()
                 for i in range(length-6):
                     additem = self.Frame.AddMenu.FindItemByPosition(6)
                     self.Frame.AddMenu.Delete(additem.GetId())
                 if profile not in ("None", "DS-301"):
-                    edititem.SetText(_("%s Profile")%profile)
+                    edititem.SetItemLabel(_("%s Profile")%profile) # TODO: maybe SetAccel of wx.MenuItem
                     edititem.Enable(True)
                     self.Frame.AddMenu.AppendSeparator()
                     for text, indexes in self.Manager.GetCurrentSpecificMenu():
@@ -107,7 +107,7 @@ class NodeEditorTemplate:
                         self.Frame.AddMenu.Append(help='', id=new_id, kind=wx.ITEM_NORMAL, text=text)
                         self.Frame.Bind(wx.EVT_MENU, self.GetProfileCallBack(text), id=new_id)
                 else:
-                    edititem.SetText(_("Other Profile"))
+                    edititem.SetItemLabel(_("Other Profile")) # # TODO: maybe SetAccel of wx.MenuItem
                     edititem.Enable(False)
         
 #-------------------------------------------------------------------------------
