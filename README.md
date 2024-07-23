@@ -14,3 +14,8 @@ Adaption work:
 4. WxPython, old->new, some api has changed / missing, need modification
 
 
+Update:
+Now load/save works, build dic to .c/h files have some problem, still need debugging.
+
+Old code use gnosis to load/dump, now replace with pickle, but not compatible with old style generated file.
+
