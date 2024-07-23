@@ -59,7 +59,7 @@ if __name__ == '__main__':
         if os.path.isfile(fileIn):
             print(_("Parsing input file"))
             result = manager.OpenFileInCurrent(fileIn)
-            if not isinstance(result, (StringType, UnicodeType)):
+            if not isinstance(result, str):
                 Node = result
             else:
                 print(result)
@@ -69,7 +69,7 @@ if __name__ == '__main__':
             sys.exit(-1)
         print(_("Writing output file"))
         result = manager.ExportCurrentToCFile(fileOut)
-        if isinstance(result, (UnicodeType, StringType)):
+        if isinstance(result, str):
             print(result)
             sys.exit(-1)
         print(_("All done"))

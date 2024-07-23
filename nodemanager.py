@@ -21,9 +21,9 @@
 #License along with this library; if not, write to the Free Software
 #Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
-# from gnosis.xml.pickle import *
-# from gnosis.xml.pickle.util import setParanoia
-# setParanoia(0)
+
+
+import pickle
 
 from node import *
 import eds_utils, gen_cfile
@@ -275,8 +275,11 @@ class NodeManager:
     def OpenFileInCurrent(self, filepath):
         try:
             # Open and load file
-            file = open(filepath, "r")
-            node = load(file)
+            # file = open(filepath, "r")
+            # node = load(file)
+            # TODO: if can be compatible with old?
+            file = open(filepath, "rb")
+            node = pickle.load(file)
             file.close()
             self.CurrentNode = node
             self.CurrentNode.SetNodeID(0)
@@ -297,8 +300,11 @@ class NodeManager:
             if filepath == "":
                 return False
         # Save node in file
-        file = open(filepath, "w")
-        dump(self.CurrentNode, file)
+        # file = open(filepath, "w")
+        # dump(self.CurrentNode, file)
+        # TODO: if can be compatible with old?
+        file = open(filepath, "wb")
+        pickle.dump(self.CurrentNode, file)
         file.close()
         self.SetCurrentFilePath(filepath)
         # Update saved state in buffer
@@ -578,14 +584,14 @@ class NodeManager:
             self.CurrentNode.RemoveLine(index + 0x200, 0x1BFF)
         else:
             found = False
-            for menu,list in self.CurrentNode.GetSpecificMenu():
-                for i in list:
+            for menu,listvar in self.CurrentNode.GetSpecificMenu():
+                for i in listvar:
                     iinfos = self.GetEntryInfos(i)
                     indexes = [i + incr * iinfos["incr"] for incr in range(iinfos["nbmax"])] 
                     if index in indexes:
                         found = True
                         diff = index - i
-                        for j in list:
+                        for j in listvar:
                             jinfos = self.GetEntryInfos(j)
                             self.CurrentNode.RemoveLine(j + diff, j + jinfos["incr"]*jinfos["nbmax"], jinfos["incr"])
             self.CurrentNode.RemoveMapVariable(index, subIndex)
@@ -874,11 +880,11 @@ class NodeManager:
 #-------------------------------------------------------------------------------
 
     def GetCurrentCommunicationLists(self):
-        list = []
+        listvar = []
         for index in MappingDictionary.keys():
             if 0x1000 <= index < 0x1200:
-                list.append(index)
-        return self.GetProfileLists(MappingDictionary, list)
+                listvar.append(index)
+        return self.GetProfileLists(MappingDictionary, listvar)
     
     def GetCurrentDS302Lists(self):
         return self.GetSpecificProfileLists(self.CurrentNode.GetDS302Profile())
@@ -889,17 +895,17 @@ class NodeManager:
     def GetSpecificProfileLists(self, mappingdictionary):
         validlist = []
         exclusionlist = []
-        for name, list in self.CurrentNode.GetSpecificMenu():
-            exclusionlist.extend(list)
+        for name, listvar in self.CurrentNode.GetSpecificMenu():
+            exclusionlist.extend(listvar)
         for index in mappingdictionary.keys():
             if index not in exclusionlist:
                 validlist.append(index)
         return self.GetProfileLists(mappingdictionary, validlist)
     
-    def GetProfileLists(self, mappingdictionary, list):
+    def GetProfileLists(self, mappingdictionary, listarg):
         dictionary = {}
         current = []
-        for index in list:
+        for index in listarg:
             dictionary[index] = (mappingdictionary[index]["name"], mappingdictionary[index]["need"])
             if self.CurrentNode.IsEntry(index):
                 current.append(index)
@@ -1005,12 +1011,12 @@ class NodeManager:
                 good &= min <= index <= max
             if good:
                 validchoices.append((menu, None))
-        list = [index for index in list(MappingDictionary.keys()) if index >= 0x1000]
+        listvar = [index for index in list(MappingDictionary.keys()) if index >= 0x1000]
         profiles = self.CurrentNode.GetMappings(False)
         for profile in profiles:
-            list.extend(list(profile.keys()))
-        list.sort()
-        for index in list:
+            listvar.extend(list(profile.keys()))
+        listvar.sort()
+        for index in listvar:
             if min <= index <= max and not self.CurrentNode.IsEntry(index) and index not in exclusionlist:
                 validchoices.append((self.GetEntryName(index), index))
         return validchoices

@@ -89,7 +89,7 @@ from doc_index.DS301_index import *
 try:
     import wx.html
 
-    EVT_HTML_URL_CLICK = wx.NewId()
+    EVT_HTML_URL_CLICK = wx.NewIdRef()
 
     class HtmlWindowUrlClick(wx.PyEvent):
         def __init__(self, linkinfo):
@@ -115,7 +115,7 @@ try:
 #                                Html Frame
 #-------------------------------------------------------------------------------
 
-    [ID_HTMLFRAME, ID_HTMLFRAMEHTMLCONTENT] = [wx.NewId() for _init_ctrls in range(2)]
+    [ID_HTMLFRAME, ID_HTMLFRAMEHTMLCONTENT] = [wx.NewIdRef() for _init_ctrls in range(2)]
 
     class HtmlFrame(wx.Frame):
         def _init_ctrls(self, prnt):
@@ -159,19 +159,19 @@ except:
 
 [ID_NETWORKEDIT, ID_NETWORKEDITNETWORKNODES, 
  ID_NETWORKEDITHELPBAR,
-] = [wx.NewId() for _init_ctrls in range(3)]
+] = [wx.NewIdRef() for _init_ctrls in range(3)]
 
 [ID_NETWORKEDITNETWORKMENUBUILDMASTER, 
-] = [wx.NewId() for _init_coll_AddMenu_Items in range(1)]
+] = [wx.NewIdRef() for _init_coll_AddMenu_Items in range(1)]
 
 [ID_NETWORKEDITEDITMENUNODEINFOS, ID_NETWORKEDITEDITMENUDS301PROFILE, 
  ID_NETWORKEDITEDITMENUDS302PROFILE, ID_NETWORKEDITEDITMENUOTHERPROFILE, 
-] = [wx.NewId() for _init_coll_EditMenu_Items in range(4)]
+] = [wx.NewIdRef() for _init_coll_EditMenu_Items in range(4)]
 
 [ID_NETWORKEDITADDMENUSDOSERVER, ID_NETWORKEDITADDMENUSDOCLIENT, 
  ID_NETWORKEDITADDMENUPDOTRANSMIT, ID_NETWORKEDITADDMENUPDORECEIVE, 
  ID_NETWORKEDITADDMENUMAPVARIABLE, ID_NETWORKEDITADDMENUUSERTYPE, 
-] = [wx.NewId() for _init_coll_AddMenu_Items in range(6)]
+] = [wx.NewIdRef() for _init_coll_AddMenu_Items in range(6)]
 
 class networkedit(wx.Frame, NetworkEditorTemplate):
     
@@ -541,13 +541,13 @@ class networkedit(wx.Frame, NetworkEditorTemplate):
                 find_index = True
                 index, subIndex = result
                 result = OpenPDFDocIndex(index, ScriptDirectory)
-                if isinstance(result, (StringType, UnicodeType)):
+                if isinstance(result, str):
                     message = wx.MessageDialog(self, result, _("ERROR"), wx.OK|wx.ICON_ERROR)
                     message.ShowModal()
                     message.Destroy()
         if not find_index:
             result = OpenPDFDocIndex(None, ScriptDirectory)
-            if isinstance(result, (StringType, UnicodeType)):
+            if isinstance(result, str):
                 message = wx.MessageDialog(self, result, _("ERROR"), wx.OK|wx.ICON_ERROR)
                 message.ShowModal()
                 message.Destroy()

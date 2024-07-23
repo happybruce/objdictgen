@@ -39,7 +39,7 @@ ScriptDirectory = os.path.split(__file__)[0]
  ID_COMMUNICATIONDIALOGCURRENTINDEXES, ID_COMMUNICATIONDIALOGSELECT, 
  ID_COMMUNICATIONDIALOGUNSELECT, ID_COMMUNICATIONDIALOGSTATICTEXT1, 
  ID_COMMUNICATIONDIALOGSTATICTEXT2
-] = [wx.NewId() for _init_ctrls in range(7)]
+] = [wx.NewIdRef() for _init_ctrls in range(7)]
 
 class CommunicationDialog(wx.Dialog):
     def _init_coll_flexGridSizer1_Items(self, parent):
@@ -161,9 +161,9 @@ class CommunicationDialog(wx.Dialog):
     def SetIndexDictionary(self, dictionary):
         self.IndexDictionary = dictionary
         
-    def SetCurrentList(self, list):
+    def SetCurrentList(self, listarg):
         self.CurrentList = []
-        self.CurrentList.extend(list)
+        self.CurrentList.extend(listarg)
         self.CurrentList.sort()
         
     def GetCurrentList(self):
@@ -228,7 +228,7 @@ class CommunicationDialog(wx.Dialog):
  ID_MAPVARIABLEDIALOGRADIOBUTTON3, ID_MAPVARIABLEDIALOGSTATICTEXT1, 
  ID_MAPVARIABLEDIALOGSTATICTEXT2, ID_MAPVARIABLEDIALOGSTATICTEXT3, 
  ID_MAPVARIABLEDIALOGSTATICTEXT4, 
-] = [wx.NewId() for _init_ctrls in range(13)]
+] = [wx.NewIdRef() for _init_ctrls in range(13)]
 
 class MapVariableDialog(wx.Dialog):
     def _init_coll_flexGridSizer1_Items(self, parent):
@@ -413,7 +413,7 @@ class MapVariableDialog(wx.Dialog):
  ID_USERTYPEDIALOGSTATICBOX1, ID_USERTYPEDIALOGSTATICTEXT1, 
  ID_USERTYPEDIALOGSTATICTEXT2, ID_USERTYPEDIALOGSTATICTEXT3, 
  ID_USERTYPEDIALOGSTATICTEXT4,  
-] = [wx.NewId() for _init_ctrls in range(11)]
+] = [wx.NewIdRef() for _init_ctrls in range(11)]
 
 class UserTypeDialog(wx.Dialog):
     def _init_coll_flexGridSizer1_Items(self, parent):
@@ -579,12 +579,12 @@ class UserTypeDialog(wx.Dialog):
 
     def SetTypeList(self, typedic, type = None):
         self.Type.Clear()
-        list = []
+        listvar = []
         for index, (name, valuetype) in typedic.items():
             self.TypeDictionary[name] = (index, valuetype)
-            list.append((index, name))
-        list.sort()
-        for index, name in list:
+            listvar.append((index, name))
+        listvar.sort()
+        for index, name in listvar:
             self.Type.Append(name)
         if type != None:
             self.Type.SetStringSelection(typedic[type][0])
@@ -641,7 +641,7 @@ class UserTypeDialog(wx.Dialog):
  ID_NODEINFOSDIALOGSTATICTEXT1, ID_NODEINFOSDIALOGSTATICTEXT2, 
  ID_NODEINFOSDIALOGSTATICTEXT3, ID_NODEINFOSDIALOGSTATICTEXT4, 
  ID_NODEINFOSDIALOGSTATICTEXT5, 
-] = [wx.NewId() for _init_ctrls in range(11)]
+] = [wx.NewIdRef() for _init_ctrls in range(11)]
 
 def GetNodeTypes():
     _ = lambda x : x
@@ -1104,7 +1104,7 @@ class CreateNodeDialog(wx.Dialog):
  ID_ADDSLAVEDIALOGSLAVENODEID, ID_ADDSLAVEDIALOGEDSFILE, 
  ID_ADDSLAVEDIALOGIMPORTEDS, ID_ADDSLAVEDIALOGSTATICTEXT1, 
  ID_ADDSLAVEDIALOGSTATICTEXT2, ID_ADDSLAVEDIALOGSTATICTEXT3, 
-] = [wx.NewId() for _init_ctrls in range(8)]
+] = [wx.NewIdRef() for _init_ctrls in range(8)]
 
 class AddSlaveDialog(wx.Dialog):
     def _init_coll_flexGridSizer1_Items(self, parent):
@@ -1240,7 +1240,7 @@ class AddSlaveDialog(wx.Dialog):
                                os.path.expanduser("~"),
                                "",
                                _("EDS files (*.eds)|*.eds|All files|*.*"),
-                               wx.OPEN)
+                               wx.FD_OPEN)
         if dialog.ShowModal() == wx.ID_OK:
             filepath = dialog.GetPath()
         else:
@@ -1406,7 +1406,7 @@ class DCFEntryValuesTable(wx.grid.PyGridTableBase):
  ID_DCFENTRYVALUESDIALOGADDBUTTON, ID_DCFENTRYVALUESDIALOGDELETEBUTTON, 
  ID_DCFENTRYVALUESDIALOGUPBUTTON, ID_DCFENTRYVALUESDIALOGDOWNBUTTON, 
  ID_VARIABLEEDITORPANELSTATICTEXT1, 
-] = [wx.NewId() for _init_ctrls in range(7)]
+] = [wx.NewIdRef() for _init_ctrls in range(7)]
 
 class DCFEntryValuesDialog(wx.Dialog):
     

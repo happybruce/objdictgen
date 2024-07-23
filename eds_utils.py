@@ -368,12 +368,12 @@ def ParseEDSFile(filepath):
             # Verify that entry has an ObjectType
             values["OBJECTTYPE"] = values.get("OBJECTTYPE", 7)
             # Extract parameters defined
-            keys = frozenset(list(values.keys()))
+            keys = set(list(values.keys()))
             keys.discard("subindexes")
             # Extract possible parameters and parameters required
-            possible = frozenset(ENTRY_TYPES[values["OBJECTTYPE"]]["require"] + 
+            possible = set(ENTRY_TYPES[values["OBJECTTYPE"]]["require"] + 
                            ENTRY_TYPES[values["OBJECTTYPE"]]["optional"])
-            required = frozenset(ENTRY_TYPES[values["OBJECTTYPE"]]["require"])
+            required = set(ENTRY_TYPES[values["OBJECTTYPE"]]["require"])
             # Verify that parameters defined contains all the parameters required
             if not keys.issuperset(required):
                 missing = required.difference(keys)

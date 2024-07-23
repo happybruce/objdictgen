@@ -103,7 +103,7 @@ class NodeEditorTemplate:
                     edititem.Enable(True)
                     self.Frame.AddMenu.AppendSeparator()
                     for text, indexes in self.Manager.GetCurrentSpecificMenu():
-                        new_id = wx.NewId()
+                        new_id = wx.NewIdRef()
                         self.Frame.AddMenu.Append(help='', id=new_id, kind=wx.ITEM_NORMAL, text=text)
                         self.Frame.Bind(wx.EVT_MENU, self.GetProfileCallBack(text), id=new_id)
                 else:
@@ -201,7 +201,7 @@ class NodeEditorTemplate:
             dialog.SetIndex(index)
             if dialog.ShowModal() == wx.ID_OK:
                 result = self.Manager.AddMapVariableToCurrent(*dialog.GetValues())
-                if not isinstance(result, (StringType, UnicodeType)):
+                if not isinstance(result, str):
                     self.RefreshBufferState()
                     self.RefreshCurrentIndexList()
                 else:
@@ -215,7 +215,7 @@ class NodeEditorTemplate:
         dialog.SetTypeList(self.Manager.GetCustomisableTypes())
         if dialog.ShowModal() == wx.ID_OK:
             result = self.Manager.AddUserTypeToCurrent(*dialog.GetValues())
-            if not isinstance(result, (StringType, UnicodeType)):
+            if not isinstance(result, str):
                 self.RefreshBufferState()
                 self.RefreshCurrentIndexList()
             else:

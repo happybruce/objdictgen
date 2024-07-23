@@ -5,7 +5,7 @@ from subindextable import *
 from commondialogs import *
 
 [ID_NETWORKEDITNETWORKNODES,
-] = [wx.NewId() for _init_ctrls in range(1)]
+] = [wx.NewIdRef() for _init_ctrls in range(1)]
 
 class NetworkEditorTemplate(NodeEditorTemplate):
     
