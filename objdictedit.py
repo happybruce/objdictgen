@@ -60,15 +60,15 @@ langid = wx.LANGUAGE_DEFAULT
 # Define translation domain (name of translation files)
 domain = "objdictgen"
 
-# Define locale for wx
-loc = builtins.__dict__.get('loc', None)
-if loc is None:
-    loc = wx.Locale(langid)
-    builtins.__dict__['loc'] = loc
-# Define location for searching translation files
-loc.AddCatalogLookupPathPrefix(localedir)
-# Define locale domain
-loc.AddCatalog(domain)
+# # Define locale for wx
+# loc = builtins.__dict__.get('loc', None)
+# if loc is None:
+#     loc = wx.Locale(langid)
+#     builtins.__dict__['loc'] = loc
+# # Define location for searching translation files
+# loc.AddCatalogLookupPathPrefix(localedir)
+# # Define locale domain
+# loc.AddCatalog(domain)
 
 if __name__ == '__main__':
     builtins.__dict__['_'] = wx.GetTranslation
