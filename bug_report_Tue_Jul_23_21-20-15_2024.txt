@@ -1,0 +1,68 @@
+app-title:
+objdictedit
+
+app-version:
+$Revision: 1.48 $
+
+cwd:
+E:\Github\objdictgen
+
+date:
+Tue Jul 23 21:20:15 2024
+
+e-type:
+<class 'AttributeError'>
+
+e-value:
+'FlexGridSizer' object has no attribute 'AddSizer'
+
+locals:
+    self: <commondialogs.MapVariableDialog object at 0x000002363D13E290>
+    parent: <wx._core.FlexGridSizer object at 0x000002363D13E170>
+
+platform:
+Windows-10-10.0.22631-SP0
+
+python-version:
+3.11.9
+
+self:
+    staticText1: <wx._core.StaticText object at 0x000002363D13D120>
+    staticText2: <wx._core.StaticText object at 0x000002363D13D090>
+    staticText3: <wx._core.StaticText object at 0x000002363D13D000>
+    staticText4: <wx._core.StaticText object at 0x000002363D13CF70>
+    radioButton1: <wx._core.RadioButton object at 0x000002363D13CEE0>
+    radioButton2: <wx._core.RadioButton object at 0x000002363D13CE50>
+    radioButton3: <wx._core.RadioButton object at 0x000002363D13CDC0>
+    Index: <wx._core.TextCtrl object at 0x000002363D13CD30>
+    IndexName: <wx._core.TextCtrl object at 0x000002363D13CCA0>
+    Number: <wx._core.TextCtrl object at 0x000002363D13CC10>
+    Spacer: <wx._core.Panel object at 0x000002363D13CB80>
+    Spacer2: <wx._core.Panel object at 0x000002363D13CAF0>
+    ButtonSizer: <wx._core.StdDialogButtonSizer object at 0x000002363D13DFC0>
+    flexGridSizer1: <wx._core.FlexGridSizer object at 0x000002363D13E170>
+    MainSizer: <wx._core.FlexGridSizer object at 0x000002363D13CA60>
+
+traceback:
+  File "E:\Github\objdictgen\subindextable.py", line 603, in OnAddButtonClick
+    getattr(self.ParentWindow, INDEXCHOICE_OPTIONS[choice][2])()
+  File "E:\Github\objdictgen\nodeeditortemplate.py", line 200, in AddMapVariable
+    dialog = MapVariableDialog(self.Frame)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "E:\Github\objdictgen\commondialogs.py", line 341, in __init__
+    self._init_ctrls(parent)
+  File "E:\Github\objdictgen\commondialogs.py", line 338, in _init_ctrls
+    self._init_sizers()
+  File "E:\Github\objdictgen\commondialogs.py", line 264, in _init_sizers
+    self._init_coll_flexGridSizer1_Items(self.flexGridSizer1)
+  File "E:\Github\objdictgen\commondialogs.py", line 235, in _init_coll_flexGridSizer1_Items
+    parent.Add(self.MainSizer, 0, border=20, flag=wx.GROW|wx.TOP|wx.LEFT|wx.RIGHT)
+    ^^^^^^^^^^^^^^^
+<class 'AttributeError'>: 'FlexGridSizer' object has no attribute 'AddSizer'
+
+wx-platform:
+__WXMSW__
+
+wx-version:
+4.2.1
+
