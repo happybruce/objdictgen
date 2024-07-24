@@ -2,7 +2,7 @@
 objdictgen from https://github.com/ljessendk/CanFestival, old code have to use python2 to start the UI, so I try to adapt it to use Python3, now it finally works, you can try it :)
 
 
-Main python file is objdictedit.py, must know that this project is only objdictfen, have not test with CANFestival.
+Main python file is objdictedit.py, must know that this project is only objdictgen, have not test with CANFestival.
 
 My setting is:
 - Python: 3.11.9
