@@ -78,6 +78,8 @@ def GetValidTypeInfos(typename, items=[]):
                 size = 0
                 for item in items:
                     size = max(size, len(item))
+                if size == 0:
+                    size = 128 # TODO:
                 typeinfos = ("UNS8", size, "domain", False)
             elif values[0] == "BOOLEAN":
                 typeinfos = ("UNS8", None, "boolean", False)
@@ -208,7 +210,7 @@ def GenerateFileContent(Node, headerfilepath, pointers_dict = {}):
             typeinfos = GetValidTypeInfos(typename, [values])
             if typename == "DOMAIN" and index in variablelist:
                 if not typeinfos[1]:
-                    raise ValueError(_("\nDomain variable not initialized\nindex : 0x%04X\nsubindex : 0x00")%index)
+                    raise ValueError(_("\nDomain variable not initialized1\nindex : 0x%04X\nsubindex : 0x00")%index)
             texts["subIndexType"] = typeinfos[0]
             if subentry_infos["access"].upper() == "CONST":
                 texts["subIndexType"] = "const CONSTSTORE " + texts["subIndexType"]
@@ -276,7 +278,7 @@ def GenerateFileContent(Node, headerfilepath, pointers_dict = {}):
                                 sep = ""
                             value, comment = ComputeValue(typeinfos[2], value)
                             if len(value) == 2 and typename == "DOMAIN":
-                                raise ValueError("\nDomain variable not initialized\nindex : 0x%04X\nsubindex : 0x%02X"%(index, subIndex))
+                                raise ValueError("\nDomain variable not initialized2\nindex : 0x%04X\nsubindex : 0x%02X"%(index, subIndex))
                             if subentry_infos["access"].upper() == "CONST" and typeinfos[2] == "visible_string":
                                 mappedVariableContent += "    (const CONSTSTORE char[]){%s}%s%s\n"%(value, sep, comment)
                             else:
