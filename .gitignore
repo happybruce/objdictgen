@@ -1,2 +1,5 @@
 /gnosis
 /canfestival_config.py
+*.pyo
+*.pyd
+*.pyc
