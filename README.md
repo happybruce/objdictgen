@@ -10,16 +10,12 @@ My setting is:
 
 Note: For domain type var, default buffer size is 128 bytes, at GetValidTypeInfos() in gen_cfile.py
 
-Below is some history:
 
 Adaption work:
 1. Syntax modification, py2->py3, like print, try..except, etc..
-3. lib gnosis, need replacement, this is used to serialize/de-serialize, big work..
+3. lib gnosis, use pickle to replace, this is used to serialize/de-serialize, big work..
 4. WxPython, old->new, some api has changed / missing, need modification
 
 
-Update:
-Now load/save works, build dic to .c/h files have some problem, still need debugging.
-
-Old code use gnosis to load/dump, now replace with pickle, but not compatible with old style generated file.
+Note: Old code use gnosis to load/dump, now replace with pickle, but not compatible with old style generated file.
 
