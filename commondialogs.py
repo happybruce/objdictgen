@@ -482,7 +482,7 @@ class UserTypeDialog(wx.Dialog):
         self.Type = wx.ComboBox(choices=[], id=ID_USERTYPEDIALOGTYPE,
               name='Type', parent=self, pos=wx.Point(0, 0),
               size=wx.Size(0, 28), style=wx.CB_READONLY)
-        self.Type.Bind(wx.wx.EVT_COMBOBOX, self.OnTypeChoice,
+        self.Type.Bind(wx.EVT_COMBOBOX, self.OnTypeChoice,
               id=ID_USERTYPEDIALOGTYPE)
 
         self.Spacer = wx.Panel(id=ID_MAPVARIABLEDIALOGSPACER,
@@ -674,7 +674,7 @@ class NodeInfosDialog(wx.Dialog):
 
     def _init_sizers(self):
         self.flexGridSizer1 = wx.FlexGridSizer(cols=1, hgap=0, rows=2, vgap=10)
-        self.MainSizer = wx.FlexGridSizer(cols=1, hgap=0, rows=8, vgap=5)
+        self.MainSizer = wx.FlexGridSizer(cols=1, hgap=0, rows=10, vgap=5)
         
         self._init_coll_flexGridSizer1_Items(self.flexGridSizer1)
         self._init_coll_flexGridSizer1_Growables(self.flexGridSizer1)
