@@ -29,7 +29,7 @@ from node import *
 import eds_utils, gen_cfile
 
 from types import *
-import os, re
+import os, re, codecs
 
 UndoBufferLength = 20
 
@@ -1092,7 +1092,7 @@ class NodeManager:
                                 editor["value"] = "dcf"
                             else:
                                 editor["value"] = "domain"
-                            dic["value"] = dic["value"].encode('hex_codec')
+                            dic["value"] =  codecs.encode(str.encode(dic["value"]), 'hex_codec')
                         elif dic["type"] == "BOOLEAN":
                             editor["value"] = "bool"
                             dic["value"] = BoolType[dic["value"]]
