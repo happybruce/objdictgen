@@ -280,6 +280,10 @@ class NodeManager:
             # TODO: if can be compatible with old?
             file = open(filepath, "rb")
             node = pickle.load(file)
+            if node.GetNodeName() == "": # use file name as node name if node name is empty
+                bname = os.path.basename(filepath)
+                nodename, _ = os.path.splitext(bname)
+                node.SetNodeName(nodename)
             file.close()
             self.CurrentNode = node
             self.CurrentNode.SetNodeID(0)
