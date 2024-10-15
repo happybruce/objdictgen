@@ -1093,7 +1093,7 @@ class Node:
         return ",".join(listvar)
 
     def GenerateMapName(self, name, index, subindex):
-        return "%s (0x%4.4X)" % (name, index)
+        return "{} ({:04X}h_{:02})".format(name, index, subindex)
 
     """
     Generate the list of variables that can be mapped for the current node
@@ -1105,10 +1105,10 @@ class Node:
         listvar = self.GetMapVariableList()
         for index, subIndex, size, name in listvar:
             self.MapList += ",%s"%name
-            map = "%04X%02X%02X"%(index,subIndex,size)
+            mapcotent = "%04X%02X%02X"%(index,subIndex,size)
             mapname = self.GenerateMapName(name, index, subIndex)
-            self.NameTranslation[mapname] = map
-            self.MapTranslation[map] = mapname
+            self.NameTranslation[mapname] = mapcotent
+            self.MapTranslation[mapcotent] = mapname
 
     def GetMapValue(self, mapname):
         if mapname == "None":
