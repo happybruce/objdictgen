@@ -65,22 +65,22 @@ class NodeEditorTemplate:
         if selection:
             index, subIndex = selection
             if manager.IsCurrentEntry(index):
-                self.Frame.HelpBar.SetStatusText(_("Index: 0x%04X")%index, 0)
-                self.Frame.HelpBar.SetStatusText(_("Subindex: 0x%02X")%subIndex, 1)
+                self.Frame.HelpBar.SetStatusText("Index: 0x%04X"%index, 0)
+                self.Frame.HelpBar.SetStatusText("Subindex: 0x%02X"%subIndex, 1)
                 entryinfos = manager.GetEntryInfos(index)
                 name = entryinfos["name"]
-                category = _("Optional")
+                category = "Optional"
                 if entryinfos["need"]:
-                    category = _("Mandatory")
+                    category = "Mandatory"
                 struct = "VAR"
                 number = ""
                 if entryinfos["struct"] & OD_IdenticalIndexes:
-                    number = _(" possibly defined %d times")%entryinfos["nbmax"]
+                    number = " possibly defined {} times".format(entryinfos["nbmax"])
                 if entryinfos["struct"] & OD_IdenticalSubindexes:
                     struct = "REC"
                 elif entryinfos["struct"] & OD_MultipleSubindexes:
                     struct = "ARRAY"
-                text = _("%s: %s entry of struct %s%s.")%(name,category,struct,number)
+                text = "{}: {} entry of struct {}{}.".format(name,category,struct,number)
                 self.Frame.HelpBar.SetStatusText(text, 2)
             else:
                 for i in range(3):
@@ -99,7 +99,7 @@ class NodeEditorTemplate:
                     additem = self.Frame.AddMenu.FindItemByPosition(6)
                     self.Frame.AddMenu.Delete(additem.GetId())
                 if profile not in ("None", "DS-301"):
-                    edititem.SetItemLabel(_("%s Profile")%profile) # TODO: maybe SetAccel of wx.MenuItem
+                    edititem.SetItemLabel("{} Profile".format(profile)) # TODO: maybe SetAccel of wx.MenuItem
                     edititem.Enable(True)
                     self.Frame.AddMenu.AppendSeparator()
                     for text, indexes in self.Manager.GetCurrentSpecificMenu():
@@ -107,7 +107,7 @@ class NodeEditorTemplate:
                         self.Frame.AddMenu.Append(help='', id=new_id, kind=wx.ITEM_NORMAL, text=text)
                         self.Frame.Bind(wx.EVT_MENU, self.GetProfileCallBack(text), id=new_id)
                 else:
-                    edititem.SetItemLabel(_("Other Profile")) # # TODO: maybe SetAccel of wx.MenuItem
+                    edititem.SetItemLabel("Other Profile") # # TODO: maybe SetAccel of wx.MenuItem
                     edititem.Enable(False)
         
 #-------------------------------------------------------------------------------
@@ -133,14 +133,14 @@ class NodeEditorTemplate:
 
     def OnCommunicationMenu(self, event):
         dictionary,current = self.Manager.GetCurrentCommunicationLists()
-        self.EditProfile(_("Edit DS-301 Profile"), dictionary, current)
+        self.EditProfile("Edit DS-301 Profile", dictionary, current)
     
     def OnOtherCommunicationMenu(self, event):
         dictionary,current = self.Manager.GetCurrentDS302Lists()
-        self.EditProfile(_("Edit DS-302 Profile"), dictionary, current)
+        self.EditProfile("Edit DS-302 Profile", dictionary, current)
     
     def OnEditProfileMenu(self, event):
-        title = _("Edit %s Profile") % self.Manager.GetCurrentProfileName()
+        title = "Edit {} Profile".format(self.Manager.GetCurrentProfileName())
         dictionary,current = self.Manager.GetCurrentProfileLists()
         self.EditProfile(title, dictionary, current)
     
@@ -208,7 +208,7 @@ class NodeEditorTemplate:
                     self.ShowErrorMessage(result)
             dialog.Destroy()
         else:
-            self.ShowErrorMessage(_("No map variable index left!"))
+            self.ShowErrorMessage("No map variable index left!")
         
     def AddUserType(self):
         dialog = UserTypeDialog(self)
@@ -223,6 +223,6 @@ class NodeEditorTemplate:
         dialog.Destroy()
 
     def ShowErrorMessage(self, message):
-        message = wx.MessageDialog(self.Frame, message, _("Error"), wx.OK|wx.ICON_ERROR)
+        message = wx.MessageDialog(self.Frame, message, "Error", wx.OK|wx.ICON_ERROR)
         message.ShowModal()
         message.Destroy()

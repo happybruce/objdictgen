@@ -149,7 +149,7 @@ try:
             try:
                 import webbrowser
             except ImportError:
-                wx.MessageBox(_('Please point your browser at: %s') % url)
+                wx.MessageBox(('Please point your browser at: %s') % url)
             else:
                 webbrowser.open(url)
     
@@ -179,25 +179,25 @@ class networkedit(wx.Frame, NetworkEditorTemplate):
     
     def _init_coll_MenuBar_Menus(self, parent):
         if self.ModeSolo:
-            parent.Append(menu=self.FileMenu, title=_('File'))
-        parent.Append(menu=self.NetworkMenu, title=_('Network'))
-        parent.Append(menu=self.EditMenu, title=_('Edit'))
-        parent.Append(menu=self.AddMenu, title=_('Add'))
-        parent.Append(menu=self.HelpMenu, title=_('Help'))
+            parent.Append(menu=self.FileMenu, title=('File'))
+        parent.Append(menu=self.NetworkMenu, title=('Network'))
+        parent.Append(menu=self.EditMenu, title=('Edit'))
+        parent.Append(menu=self.AddMenu, title=('Add'))
+        parent.Append(menu=self.HelpMenu, title=('Help'))
 
     def _init_coll_FileMenu_Items(self, parent):
         parent.Append(help='', id=wx.ID_NEW,
-              kind=wx.ITEM_NORMAL, text=_('New\tCTRL+N'))
+              kind=wx.ITEM_NORMAL, text=('New\tCTRL+N'))
         parent.Append(help='', id=wx.ID_OPEN,
-              kind=wx.ITEM_NORMAL, text=_('Open\tCTRL+O'))
+              kind=wx.ITEM_NORMAL, text=('Open\tCTRL+O'))
         parent.Append(help='', id=wx.ID_CLOSE,
-              kind=wx.ITEM_NORMAL, text=_('Close\tCTRL+W'))
+              kind=wx.ITEM_NORMAL, text=('Close\tCTRL+W'))
         parent.AppendSeparator()
         parent.Append(help='', id=wx.ID_SAVE,
-              kind=wx.ITEM_NORMAL, text=_('Save\tCTRL+S'))
+              kind=wx.ITEM_NORMAL, text=('Save\tCTRL+S'))
         parent.AppendSeparator()
         parent.Append(help='', id=wx.ID_EXIT,
-              kind=wx.ITEM_NORMAL, text=_('Exit'))
+              kind=wx.ITEM_NORMAL, text=('Exit'))
         self.Bind(wx.EVT_MENU, self.OnNewProjectMenu, id=wx.ID_NEW)
         self.Bind(wx.EVT_MENU, self.OnOpenProjectMenu, id=wx.ID_OPEN)
         self.Bind(wx.EVT_MENU, self.OnCloseProjectMenu, id=wx.ID_CLOSE)
@@ -206,12 +206,12 @@ class networkedit(wx.Frame, NetworkEditorTemplate):
 
     def _init_coll_NetworkMenu_Items(self, parent):
         parent.Append(help='', id=wx.ID_ADD,
-              kind=wx.ITEM_NORMAL, text=_('Add Slave Node'))
+              kind=wx.ITEM_NORMAL, text=('Add Slave Node'))
         parent.Append(help='', id=wx.ID_DELETE,
-              kind=wx.ITEM_NORMAL, text=_('Remove Slave Node'))
+              kind=wx.ITEM_NORMAL, text=('Remove Slave Node'))
         parent.AppendSeparator()
         parent.Append(help='', id=ID_NETWORKEDITNETWORKMENUBUILDMASTER,
-              kind=wx.ITEM_NORMAL, text=_('Build Master Dictionary'))
+              kind=wx.ITEM_NORMAL, text=('Build Master Dictionary'))
         self.Bind(wx.EVT_MENU, self.OnAddSlaveMenu, id=wx.ID_ADD)
         self.Bind(wx.EVT_MENU, self.OnRemoveSlaveMenu, id=wx.ID_DELETE)
 ##        self.Bind(wx.EVT_MENU, self.OnBuildMasterMenu,
@@ -219,21 +219,21 @@ class networkedit(wx.Frame, NetworkEditorTemplate):
 
     def _init_coll_EditMenu_Items(self, parent):
         parent.Append(help='', id=wx.ID_REFRESH,
-              kind=wx.ITEM_NORMAL, text=_('Refresh\tCTRL+R'))
+              kind=wx.ITEM_NORMAL, text=('Refresh\tCTRL+R'))
         parent.AppendSeparator()
         parent.Append(help='', id=wx.ID_UNDO,
-              kind=wx.ITEM_NORMAL, text=_('Undo\tCTRL+Z'))
+              kind=wx.ITEM_NORMAL, text=('Undo\tCTRL+Z'))
         parent.Append(help='', id=wx.ID_REDO,
-              kind=wx.ITEM_NORMAL, text=_('Redo\tCTRL+Y'))
+              kind=wx.ITEM_NORMAL, text=('Redo\tCTRL+Y'))
         parent.AppendSeparator()
         parent.Append(help='', id=ID_NETWORKEDITEDITMENUNODEINFOS,
-              kind=wx.ITEM_NORMAL, text=_('Node infos'))
+              kind=wx.ITEM_NORMAL, text=('Node infos'))
         parent.Append(help='', id=ID_NETWORKEDITEDITMENUDS301PROFILE,
-              kind=wx.ITEM_NORMAL, text=_('DS-301 Profile'))
+              kind=wx.ITEM_NORMAL, text=('DS-301 Profile'))
         parent.Append(help='', id=ID_NETWORKEDITEDITMENUDS302PROFILE,
-              kind=wx.ITEM_NORMAL, text=_('DS-302 Profile'))
+              kind=wx.ITEM_NORMAL, text=('DS-302 Profile'))
         parent.Append(help='', id=ID_NETWORKEDITEDITMENUOTHERPROFILE,
-              kind=wx.ITEM_NORMAL, text=_('Other Profile'))
+              kind=wx.ITEM_NORMAL, text=('Other Profile'))
         self.Bind(wx.EVT_MENU, self.OnRefreshMenu, id=wx.ID_REFRESH)
         self.Bind(wx.EVT_MENU, self.OnUndoMenu, id=wx.ID_UNDO)
         self.Bind(wx.EVT_MENU, self.OnRedoMenu, id=wx.ID_REDO)
@@ -248,17 +248,17 @@ class networkedit(wx.Frame, NetworkEditorTemplate):
 
     def _init_coll_AddMenu_Items(self, parent):
         parent.Append(help='', id=ID_NETWORKEDITADDMENUSDOSERVER,
-              kind=wx.ITEM_NORMAL, text=_('SDO Server'))
+              kind=wx.ITEM_NORMAL, text=('SDO Server'))
         parent.Append(help='', id=ID_NETWORKEDITADDMENUSDOCLIENT,
-              kind=wx.ITEM_NORMAL, text=_('SDO Client'))
+              kind=wx.ITEM_NORMAL, text=('SDO Client'))
         parent.Append(help='', id=ID_NETWORKEDITADDMENUPDOTRANSMIT,
-              kind=wx.ITEM_NORMAL, text=_('PDO Transmit'))
+              kind=wx.ITEM_NORMAL, text=('PDO Transmit'))
         parent.Append(help='', id=ID_NETWORKEDITADDMENUPDORECEIVE,
-              kind=wx.ITEM_NORMAL, text=_('PDO Receive'))
+              kind=wx.ITEM_NORMAL, text=('PDO Receive'))
         parent.Append(help='', id=ID_NETWORKEDITADDMENUMAPVARIABLE,
-              kind=wx.ITEM_NORMAL, text=_('Map Variable'))
+              kind=wx.ITEM_NORMAL, text=('Map Variable'))
         parent.Append(help='', id=ID_NETWORKEDITADDMENUUSERTYPE,
-              kind=wx.ITEM_NORMAL, text=_('User Type'))
+              kind=wx.ITEM_NORMAL, text=('User Type'))
         self.Bind(wx.EVT_MENU, self.OnAddSDOServerMenu,
               id=ID_NETWORKEDITADDMENUSDOSERVER)
         self.Bind(wx.EVT_MENU, self.OnAddSDOClientMenu,
@@ -274,14 +274,14 @@ class networkedit(wx.Frame, NetworkEditorTemplate):
 
     def _init_coll_HelpMenu_Items(self, parent):
         parent.Append(help='', id=wx.ID_HELP,
-              kind=wx.ITEM_NORMAL, text=_('DS-301 Standard\tF1'))
+              kind=wx.ITEM_NORMAL, text=('DS-301 Standard\tF1'))
         self.Bind(wx.EVT_MENU, self.OnHelpDS301Menu, id=wx.ID_HELP)
         parent.Append(help='', id=wx.ID_HELP_CONTEXT,
-              kind=wx.ITEM_NORMAL, text=_('CAN Festival Docs\tF2'))
+              kind=wx.ITEM_NORMAL, text=('CAN Festival Docs\tF2'))
         self.Bind(wx.EVT_MENU, self.OnHelpCANFestivalMenu, id=wx.ID_HELP_CONTEXT)
         if Html_Window and self.ModeSolo:
             parent.Append(help='', id=wx.ID_ABOUT,
-                  kind=wx.ITEM_NORMAL, text=_('About'))
+                  kind=wx.ITEM_NORMAL, text=('About'))
             self.Bind(wx.EVT_MENU, self.OnAboutMenu, id=wx.ID_ABOUT)
 
     def _init_coll_HelpBar_Fields(self, parent):
@@ -315,7 +315,7 @@ class networkedit(wx.Frame, NetworkEditorTemplate):
     def _init_ctrls(self, prnt):
         wx.Frame.__init__(self, id=ID_NETWORKEDIT, name='networkedit',
               parent=prnt, pos=wx.Point(149, 178), size=wx.Size(1000, 700),
-              style=wx.DEFAULT_FRAME_STYLE, title=_('Networkedit'))
+              style=wx.DEFAULT_FRAME_STYLE, title=('Networkedit'))
         self._init_utils()
         self.SetClientSize(wx.Size(1000, 700))
         self.SetMenuBar(self.MenuBar)

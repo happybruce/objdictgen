@@ -858,13 +858,13 @@ class NodeManager:
         if self.UndoBuffers[index].IsCurrentSaved():
             return self.FileNames[index]
         else:
-            return "~%s~"%self.FileNames[index]
+            return "~{}~".format(self.FileNames[index])
     
     def SetCurrentFilePath(self, filepath):
         self.FilePaths[self.NodeIndex] = filepath
         if filepath == "":
             self.LastNewIndex += 1
-            self.FileNames[self.NodeIndex] = _("Unnamed%d")%self.LastNewIndex
+            self.FileNames[self.NodeIndex] = "Unnamed{}".format(self.LastNewIndex)
         else:
             self.FileNames[self.NodeIndex] = os.path.splitext(os.path.basename(filepath))[0]
                 

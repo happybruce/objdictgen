@@ -57,12 +57,12 @@ OPTION_LIST_DICT = dict([(_(option), option) for option in GetOptionList()])
  PDO_TRANSMIT, PDO_RECEIVE, MAP_VARIABLE] = list(range(6))
 
 INDEXCHOICE_OPTIONS = {
-    USER_TYPE: (_("User Type"), 0, "AddUserType"), 
-    SDO_SERVER: (_("SDO Server"), 1, "AddSDOServerToCurrent"),
-    SDO_CLIENT: (_("SDO Client"), 1, "AddSDOClientToCurrent"),
-    PDO_RECEIVE: (_("PDO Receive"), 1, "AddPDOReceiveToCurrent"),
-    PDO_TRANSMIT: (_("PDO Transmit"), 1, "AddPDOTransmitToCurrent"),
-    MAP_VARIABLE: (_("Map Variable"), 0, "AddMapVariable")
+    USER_TYPE: ("User Type", 0, "AddUserType"), 
+    SDO_SERVER: ("SDO Server", 1, "AddSDOServerToCurrent"),
+    SDO_CLIENT: ("SDO Client", 1, "AddSDOClientToCurrent"),
+    PDO_RECEIVE: ("PDO Receive", 1, "AddPDOReceiveToCurrent"),
+    PDO_TRANSMIT: ("PDO Transmit", 1, "AddPDOTransmitToCurrent"),
+    MAP_VARIABLE: ("Map Variable", 0, "AddMapVariable")
 }
 
 INDEXCHOICE_OPTIONS_DICT = dict([(translation, option) for option, (translation, object, function) in INDEXCHOICE_OPTIONS.items()])
@@ -370,15 +370,15 @@ class EditingPanel(wx.SplitterWindow):
 
     def _init_coll_SubindexGridMenu_Items(self, parent):
         parent.Append(helpString='', id=ID_EDITINGPANELMENU1ITEMS0,
-              kind=wx.ITEM_NORMAL, item=_('Add subindexes'))
+              kind=wx.ITEM_NORMAL, item='Add subindexes')
         parent.Append(helpString='', id=ID_EDITINGPANELMENU1ITEMS1,
-              kind=wx.ITEM_NORMAL, item=_('Delete subindexes'))
+              kind=wx.ITEM_NORMAL, item='Delete subindexes')
         parent.AppendSeparator()
         parent.Append(helpString='', id=ID_EDITINGPANELMENU1ITEMS3,
-              kind=wx.ITEM_NORMAL, item=_('Default value'))
+              kind=wx.ITEM_NORMAL, item='Default value')
         if not self.Editable:
             parent.Append(helpString='', id=ID_EDITINGPANELMENU1ITEMS4,
-                  kind=wx.ITEM_NORMAL, item=_('Add to DCF'))
+                  kind=wx.ITEM_NORMAL, item='Add to DCF')
         self.Bind(wx.EVT_MENU, self.OnAddSubindexMenu,
               id=ID_EDITINGPANELMENU1ITEMS0)
         self.Bind(wx.EVT_MENU, self.OnDeleteSubindexMenu,
@@ -391,11 +391,11 @@ class EditingPanel(wx.SplitterWindow):
 
     def _init_coll_IndexListMenu_Items(self, parent):
         parent.Append(helpString='', id=ID_EDITINGPANELINDEXLISTMENUITEMS0,
-              kind=wx.ITEM_NORMAL, item=_('Rename'))
+              kind=wx.ITEM_NORMAL, item='Rename')
         parent.Append(helpString='', id=ID_EDITINGPANELINDEXLISTMENUITEMS2,
-              kind=wx.ITEM_NORMAL, item=_('Modify'))
+              kind=wx.ITEM_NORMAL, item='Modify')
         parent.Append(helpString='', id=ID_EDITINGPANELINDEXLISTMENUITEMS1,
-              kind=wx.ITEM_NORMAL, item=_('Delete'))
+              kind=wx.ITEM_NORMAL, item='Delete')
         self.Bind(wx.EVT_MENU, self.OnRenameIndexMenu,
               id=ID_EDITINGPANELINDEXLISTMENUITEMS0)
         self.Bind(wx.EVT_MENU, self.OnDeleteIndexMenu,
@@ -475,7 +475,7 @@ class EditingPanel(wx.SplitterWindow):
               self.OnSubindexGridEditorShown)
 
         self.CallbackCheck = wx.CheckBox(id=ID_EDITINGPANELCALLBACKCHECK,
-              label=_('Have Callbacks'), name='CallbackCheck',
+              label='Have Callbacks', name='CallbackCheck',
               parent=self.SubindexGridPanel, pos=wx.Point(0, 0), size=wx.Size(152,
               24), style=0)
         self.CallbackCheck.Bind(wx.EVT_CHECKBOX, self.OnCallbackCheck,
@@ -488,7 +488,7 @@ class EditingPanel(wx.SplitterWindow):
               id=ID_EDITINGPANELINDEXLIST)
         self.IndexList.Bind(wx.EVT_RIGHT_UP, self.OnIndexListRightUp)
 
-        self.AddButton = wx.Button(id=ID_EDITINGPANELADDBUTTON, label=_('Add'),
+        self.AddButton = wx.Button(id=ID_EDITINGPANELADDBUTTON, label='Add',
               name='AddButton', parent=self.IndexListPanel, pos=wx.Point(0, 0),
               size=wx.DefaultSize, style=0)
         self.AddButton.Bind(wx.EVT_BUTTON, self.OnAddButtonClick,
@@ -853,8 +853,8 @@ class EditingPanel(wx.SplitterWindow):
                 index = self.ListIndex[selected]
                 if self.Manager.IsCurrentEntry(index):
                     infos = self.Manager.GetEntryInfos(index)
-                    dialog = wx.TextEntryDialog(self, _("Give a new name for index 0x%04X")%index,
-                                 _("Rename an index"), infos["name"], wx.OK|wx.CANCEL)
+                    dialog = wx.TextEntryDialog(self, "Give a new name for index 0x%04X"%index,
+                                 "Rename an index", infos["name"], wx.OK|wx.CANCEL)
                     if dialog.ShowModal() == wx.ID_OK:
                         self.Manager.SetCurrentEntryName(index, dialog.GetValue())
                         self.ParentWindow.RefreshBufferState()
@@ -896,8 +896,8 @@ class EditingPanel(wx.SplitterWindow):
             if selected != wx.NOT_FOUND:
                 index = self.ListIndex[selected]
                 if self.Manager.IsCurrentEntry(index):
-                    dialog = wx.TextEntryDialog(self, _("Number of subindexes to add:"),
-                                 _("Add subindexes"), "1", wx.OK|wx.CANCEL)
+                    dialog = wx.TextEntryDialog(self, "Number of subindexes to add:",
+                                 "Add subindexes", "1", wx.OK|wx.CANCEL)
                     if dialog.ShowModal() == wx.ID_OK:
                         try:
                             number = int(dialog.GetValue())
@@ -905,7 +905,7 @@ class EditingPanel(wx.SplitterWindow):
                             self.ParentWindow.RefreshBufferState()
                             self.RefreshIndexList()
                         except:
-                            message = wx.MessageDialog(self, _("An integer is required!"), _("ERROR"), wx.OK|wx.ICON_ERROR)
+                            message = wx.MessageDialog(self, "An integer is required!", "ERROR", wx.OK|wx.ICON_ERROR)
                             message.ShowModal()
                             message.Destroy()
                     dialog.Destroy()
@@ -916,8 +916,8 @@ class EditingPanel(wx.SplitterWindow):
             if selected != wx.NOT_FOUND:
                 index = self.ListIndex[selected]
                 if self.Manager.IsCurrentEntry(index):
-                    dialog = wx.TextEntryDialog(self, _("Number of subindexes to delete:"),
-                                 _("Delete subindexes"), "1", wx.OK|wx.CANCEL)
+                    dialog = wx.TextEntryDialog(self, "Number of subindexes to delete:",
+                                 "Delete subindexes", "1", wx.OK|wx.CANCEL)
                     if dialog.ShowModal() == wx.ID_OK:
                         try:
                             number = int(dialog.GetValue())
@@ -925,7 +925,7 @@ class EditingPanel(wx.SplitterWindow):
                             self.ParentWindow.RefreshBufferState()
                             self.RefreshIndexList()
                         except:
-                            message = wx.MessageDialog(self, _("An integer is required!"), _("ERROR"), wx.OK|wx.ICON_ERROR)
+                            message = wx.MessageDialog(self, "An integer is required!", "ERROR", wx.OK|wx.ICON_ERROR)
                             message.ShowModal()
                             message.Destroy()
                     dialog.Destroy()

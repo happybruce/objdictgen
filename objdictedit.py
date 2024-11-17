@@ -141,7 +141,7 @@ try:
             try:
                 import webbrowser
             except ImportError:
-                wx.MessageBox(_('Please point your browser at: %s') % url)
+                wx.MessageBox(('Please point your browser at: %s') % url)
             else:
                 webbrowser.open(url)
 
@@ -172,33 +172,33 @@ class objdictedit(wx.Frame, NodeEditorTemplate):
     
     def _init_coll_MenuBar_Menus(self, parent):
         if self.ModeSolo:
-            parent.Append(menu=self.FileMenu, title=_('File'))
-        parent.Append(menu=self.EditMenu, title=_('Edit'))
-        parent.Append(menu=self.AddMenu, title=_('Add'))
-        parent.Append(menu=self.HelpMenu, title=_('Help'))
+            parent.Append(menu=self.FileMenu, title='File')
+        parent.Append(menu=self.EditMenu, title='Edit')
+        parent.Append(menu=self.AddMenu, title='Add')
+        parent.Append(menu=self.HelpMenu, title='Help')
 
     def _init_coll_FileMenu_Items(self, parent):
         parent.Append(helpString ='', id=wx.ID_NEW,
-              kind=wx.ITEM_NORMAL, item=_('New\tCTRL+N'))
+              kind=wx.ITEM_NORMAL, item='New\tCTRL+N')
         parent.Append(helpString ='', id=wx.ID_OPEN,
-              kind=wx.ITEM_NORMAL, item=_('Open\tCTRL+O'))
+              kind=wx.ITEM_NORMAL, item='Open\tCTRL+O')
         parent.Append(helpString ='', id=wx.ID_CLOSE,
-              kind=wx.ITEM_NORMAL, item=_('Close\tCTRL+W'))
+              kind=wx.ITEM_NORMAL, item='Close\tCTRL+W')
         parent.AppendSeparator()
         parent.Append(helpString ='', id=wx.ID_SAVE,
-              kind=wx.ITEM_NORMAL, item=_('Save\tCTRL+S'))
+              kind=wx.ITEM_NORMAL, item='Save\tCTRL+S')
         parent.Append(helpString ='', id=wx.ID_SAVEAS,
-              kind=wx.ITEM_NORMAL, item=_('Save As...\tALT+S'))
+              kind=wx.ITEM_NORMAL, item='Save As...\tALT+S')
         parent.AppendSeparator()
         parent.Append(helpString ='', id=ID_OBJDICTEDITFILEMENUIMPORTEDS,
-              kind=wx.ITEM_NORMAL, item=_('Import EDS file'))
+              kind=wx.ITEM_NORMAL, item='Import EDS file')
         parent.Append(helpString ='', id=ID_OBJDICTEDITFILEMENUEXPORTEDS,
-              kind=wx.ITEM_NORMAL, item=_('Export to EDS file'))
+              kind=wx.ITEM_NORMAL, item='Export to EDS file')
         parent.Append(helpString ='', id=ID_OBJDICTEDITFILEMENUEXPORTC,
-              kind=wx.ITEM_NORMAL, item=_('Build Dictionary\tCTRL+B'))
+              kind=wx.ITEM_NORMAL, item='Build Dictionary\tCTRL+B')
         parent.AppendSeparator()
         parent.Append(helpString ='', id=wx.ID_EXIT,
-              kind=wx.ITEM_NORMAL, item=_('Exit'))
+              kind=wx.ITEM_NORMAL, item=('Exit'))
         self.Bind(wx.EVT_MENU, self.OnNewMenu, id=wx.ID_NEW)
         self.Bind(wx.EVT_MENU, self.OnOpenMenu, id=wx.ID_OPEN)
         self.Bind(wx.EVT_MENU, self.OnCloseMenu, id=wx.ID_CLOSE)
@@ -214,21 +214,21 @@ class objdictedit(wx.Frame, NodeEditorTemplate):
 
     def _init_coll_EditMenu_Items(self, parent):
         parent.Append(helpString='', id=wx.ID_REFRESH,
-              kind=wx.ITEM_NORMAL, item=_('Refresh\tCTRL+R'))
+              kind=wx.ITEM_NORMAL, item=('Refresh\tCTRL+R'))
         parent.AppendSeparator()
         parent.Append(helpString='', id=wx.ID_UNDO,
-              kind=wx.ITEM_NORMAL, item=_('Undo\tCTRL+Z'))
+              kind=wx.ITEM_NORMAL, item=('Undo\tCTRL+Z'))
         parent.Append(helpString='', id=wx.ID_REDO,
-              kind=wx.ITEM_NORMAL, item=_('Redo\tCTRL+Y'))
+              kind=wx.ITEM_NORMAL, item=('Redo\tCTRL+Y'))
         parent.AppendSeparator()
         parent.Append(helpString='', id=ID_OBJDICTEDITEDITMENUNODEINFOS,
-              kind=wx.ITEM_NORMAL, item=_('Node infos'))
+              kind=wx.ITEM_NORMAL, item=('Node infos'))
         parent.Append(helpString='', id=ID_OBJDICTEDITEDITMENUDS301PROFILE,
-              kind=wx.ITEM_NORMAL, item=_('DS-301 Profile'))
+              kind=wx.ITEM_NORMAL, item=('DS-301 Profile'))
         parent.Append(helpString='', id=ID_OBJDICTEDITEDITMENUDS302PROFILE,
-              kind=wx.ITEM_NORMAL, item=_('DS-302 Profile'))
+              kind=wx.ITEM_NORMAL, item=('DS-302 Profile'))
         parent.Append(helpString='', id=ID_OBJDICTEDITEDITMENUOTHERPROFILE,
-              kind=wx.ITEM_NORMAL, item=_('Other Profile'))
+              kind=wx.ITEM_NORMAL, item=('Other Profile'))
         self.Bind(wx.EVT_MENU, self.OnRefreshMenu, id=wx.ID_REFRESH)
         self.Bind(wx.EVT_MENU, self.OnUndoMenu, id=wx.ID_UNDO)
         self.Bind(wx.EVT_MENU, self.OnRedoMenu, id=wx.ID_REDO)
@@ -243,17 +243,17 @@ class objdictedit(wx.Frame, NodeEditorTemplate):
 
     def _init_coll_AddMenu_Items(self, parent):
         parent.Append(helpString='', id=ID_OBJDICTEDITADDMENUSDOSERVER,
-              kind=wx.ITEM_NORMAL, item=_('SDO Server'))
+              kind=wx.ITEM_NORMAL, item=('SDO Server'))
         parent.Append(helpString='', id=ID_OBJDICTEDITADDMENUSDOCLIENT,
-              kind=wx.ITEM_NORMAL, item=_('SDO Client'))
+              kind=wx.ITEM_NORMAL, item=('SDO Client'))
         parent.Append(helpString='', id=ID_OBJDICTEDITADDMENUPDOTRANSMIT,
-              kind=wx.ITEM_NORMAL, item=_('PDO Transmit'))
+              kind=wx.ITEM_NORMAL, item=('PDO Transmit'))
         parent.Append(helpString='', id=ID_OBJDICTEDITADDMENUPDORECEIVE,
-              kind=wx.ITEM_NORMAL, item=_('PDO Receive'))
+              kind=wx.ITEM_NORMAL, item=('PDO Receive'))
         parent.Append(helpString='', id=ID_OBJDICTEDITADDMENUMAPVARIABLE,
-              kind=wx.ITEM_NORMAL, item=_('Map Variable'))
+              kind=wx.ITEM_NORMAL, item=('Map Variable'))
         parent.Append(helpString='', id=ID_OBJDICTEDITADDMENUUSERTYPE,
-              kind=wx.ITEM_NORMAL, item=_('User Type'))
+              kind=wx.ITEM_NORMAL, item=('User Type'))
         self.Bind(wx.EVT_MENU, self.OnAddSDOServerMenu,
               id=ID_OBJDICTEDITADDMENUSDOSERVER)
         self.Bind(wx.EVT_MENU, self.OnAddSDOClientMenu,
@@ -269,14 +269,14 @@ class objdictedit(wx.Frame, NodeEditorTemplate):
 
     def _init_coll_HelpMenu_Items(self, parent):
         parent.Append(helpString='', id=wx.ID_HELP,
-              kind=wx.ITEM_NORMAL, item=_('DS-301 Standard\tF1'))
+              kind=wx.ITEM_NORMAL, item=('DS-301 Standard\tF1'))
         self.Bind(wx.EVT_MENU, self.OnHelpDS301Menu, id=wx.ID_HELP)
         parent.Append(helpString='', id=wx.ID_HELP_CONTEXT,
-              kind=wx.ITEM_NORMAL, item=_('CAN Festival Docs\tF2'))
+              kind=wx.ITEM_NORMAL, item=('CAN Festival Docs\tF2'))
         self.Bind(wx.EVT_MENU, self.OnHelpCANFestivalMenu, id=wx.ID_HELP_CONTEXT)
         if Html_Window and self.ModeSolo:
             parent.Append(helpString='', id=wx.ID_ABOUT,
-                  kind=wx.ITEM_NORMAL, item=_('About'))
+                  kind=wx.ITEM_NORMAL, item=('About'))
             self.Bind(wx.EVT_MENU, self.OnAboutMenu, id=wx.ID_ABOUT)
 
     def _init_coll_HelpBar_Fields(self, parent):
@@ -308,7 +308,7 @@ class objdictedit(wx.Frame, NodeEditorTemplate):
     def _init_ctrls(self, prnt):
         wx.Frame.__init__(self, id=ID_OBJDICTEDIT, name='objdictedit',
               parent=prnt, pos=wx.Point(149, 178), size=wx.Size(1000, 700),
-              style=wx.DEFAULT_FRAME_STYLE, title=_('Objdictedit'))
+              style=wx.DEFAULT_FRAME_STYLE, title='Objdictedit')
         self._init_utils()
         self.SetClientSize(wx.Size(1000, 700))
         self.SetMenuBar(self.MenuBar)
@@ -337,7 +337,7 @@ class objdictedit(wx.Frame, NodeEditorTemplate):
         self._init_ctrls(parent)
         self.HtmlFrameOpened = []
         
-        icon = wx.Icon(os.path.join(ScriptDirectory,"networkedit.ico"),wx.BITMAP_TYPE_ICO)
+        icon = wx.Icon(os.path.join(ScriptDirectory, "networkedit.ico"), wx.BITMAP_TYPE_ICO)
         self.SetIcon(icon)
         
         if self.ModeSolo:
@@ -393,13 +393,13 @@ class objdictedit(wx.Frame, NodeEditorTemplate):
                 index, subIndex = result
                 result = OpenPDFDocIndex(index, ScriptDirectory)
                 if isinstance(result, str):
-                    message = wx.MessageDialog(self, result, _("ERROR"), wx.OK|wx.ICON_ERROR)
+                    message = wx.MessageDialog(self, result, "ERROR", wx.OK|wx.ICON_ERROR)
                     message.ShowModal()
                     message.Destroy()
         if not find_index:
             result = OpenPDFDocIndex(None, ScriptDirectory)
             if isinstance(result, str):
-                message = wx.MessageDialog(self, result, _("ERROR"), wx.OK|wx.ICON_ERROR)
+                message = wx.MessageDialog(self, result, "ERROR", wx.OK|wx.ICON_ERROR)
                 message.ShowModal()
                 message.Destroy()
         
@@ -407,18 +407,18 @@ class objdictedit(wx.Frame, NodeEditorTemplate):
         #self.OpenHtmlFrame("CAN Festival Reference", os.path.join(ScriptDirectory, "doc/canfestival.html"), wx.Size(1000, 600))
         if wx.Platform == '__WXMSW__':
             readerpath = get_acroversion()
-            readerexepath = os.path.join(readerpath,"AcroRd32.exe")
+            readerexepath = os.path.join(readerpath, "AcroRd32.exe")
             if(os.path.isfile(readerexepath)):
                 os.spawnl(os.P_DETACH, readerexepath, "AcroRd32.exe", '"%s"'%os.path.join(ScriptDirectory, "doc","manual_en.pdf"))
             else:
-                message = wx.MessageDialog(self, _("Check if Acrobat Reader is correctly installed on your computer"), _("ERROR"), wx.OK|wx.ICON_ERROR)
+                message = wx.MessageDialog(self, "Check if Acrobat Reader is correctly installed on your computer", "ERROR", wx.OK|wx.ICON_ERROR)
                 message.ShowModal()
                 message.Destroy()
         else:
             try:
                 os.system("xpdf -remote CANFESTIVAL %s %d &"%(os.path.join(ScriptDirectory, "doc/manual_en.pdf"),16))
             except:
-                message = wx.MessageDialog(self, _("Check if xpdf is correctly installed on your computer"), _("ERROR"), wx.OK|wx.ICON_ERROR)
+                message = wx.MessageDialog(self, "Check if xpdf is correctly installed on your computer", "ERROR", wx.OK|wx.ICON_ERROR)
                 message.ShowModal()
                 message.Destroy()
         
@@ -444,7 +444,7 @@ class objdictedit(wx.Frame, NodeEditorTemplate):
                 self._onclose()
             event.Skip()
         elif self.Manager.OneFileHasChanged():
-            dialog = wx.MessageDialog(self, _("There are changes, do you want to save?"),  _("Close Application"), wx.YES_NO|wx.CANCEL|wx.ICON_QUESTION)
+            dialog = wx.MessageDialog(self, "There are changes, do you want to save?",  "Close Application", wx.YES_NO|wx.CANCEL|wx.ICON_QUESTION)
             answer = dialog.ShowModal()
             dialog.Destroy()
             if answer == wx.ID_YES:
@@ -468,9 +468,9 @@ class objdictedit(wx.Frame, NodeEditorTemplate):
 
     def RefreshTitle(self):
         if self.FileOpened.GetPageCount() > 0:
-            self.SetTitle(_("Objdictedit - %s")%self.Manager.GetCurrentFilename())
+            self.SetTitle("Objdictedit - {}".format(self.Manager.GetCurrentFilename()))
         else:
-            self.SetTitle(_("Objdictedit"))
+            self.SetTitle("Objdictedit")
 
     def RefreshCurrentIndexList(self):
         selected = self.FileOpened.GetSelection()
@@ -554,7 +554,7 @@ class objdictedit(wx.Frame, NodeEditorTemplate):
                 self.RefreshProfileMenu()
                 self.RefreshMainMenu()
             else:
-                message = wx.MessageDialog(self, result, _("ERROR"), wx.OK|wx.ICON_ERROR)
+                message = wx.MessageDialog(self, result, "ERROR", wx.OK|wx.ICON_ERROR)
                 message.ShowModal()
                 message.Destroy()
         dialog.Destroy()
@@ -565,7 +565,7 @@ class objdictedit(wx.Frame, NodeEditorTemplate):
             directory = os.path.dirname(filepath)
         else:
             directory = os.getcwd()
-        dialog = wx.FileDialog(self, _("Choose a file"), directory, "",  _("OD files (*.od)|*.od|All files|*.*"), wx.FD_OPEN|wx.FD_CHANGE_DIR)
+        dialog = wx.FileDialog(self, "Choose a file", directory, "",  "OD files (*.od)|*.od|All files|*.*", wx.FD_OPEN|wx.FD_CHANGE_DIR)
         if dialog.ShowModal() == wx.ID_OK:
             filepath = dialog.GetPath()
             if os.path.isfile(filepath):
@@ -584,7 +584,7 @@ class objdictedit(wx.Frame, NodeEditorTemplate):
                     self.RefreshProfileMenu()
                     self.RefreshMainMenu()
                 else:
-                    message = wx.MessageDialog(self, result, _("Error"), wx.OK|wx.ICON_ERROR)
+                    message = wx.MessageDialog(self, result, "Error", wx.OK|wx.ICON_ERROR)
                     message.ShowModal()
                     message.Destroy()
         dialog.Destroy()
