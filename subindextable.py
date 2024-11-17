@@ -428,7 +428,7 @@ class EditingPanel(wx.SplitterWindow):
     def _init_ctrls(self, prnt):
         wx.SplitterWindow.__init__(self, id=ID_EDITINGPANEL,
               name='MainSplitter', parent=prnt, pos=wx.Point(0, 0),
-              size=wx.Size(-1, -1), style=wx.SP_3D)
+              size=wx.Size(-1, -1), style=wx.SP_LIVE_UPDATE|wx.SP_3D)
         self._init_utils()
         
         self.PartList = wx.ListBox(choices=[], id=ID_EDITINGPANELPARTLIST,
@@ -439,7 +439,7 @@ class EditingPanel(wx.SplitterWindow):
 
         self.SecondSplitter = wx.SplitterWindow(id=ID_EDITINGPANELSECONDSPLITTER,
               name='SecondSplitter', parent=self, pos=wx.Point(0, 0), 
-              size=wx.Size(-1, -1), style=wx.SP_3D)
+              size=wx.Size(-1, -1), style=wx.SP_LIVE_UPDATE|wx.SP_3D)
         self.SplitHorizontally(self.PartList, self.SecondSplitter, 110)
         self.SetMinimumPaneSize(1)
         
