@@ -23,30 +23,31 @@ def get_acroversion():
     return None
 
 def OpenPDFDocIndex(index, cwd):
-    if not os.path.isfile(os.path.join(cwd, "doc","301_v04000201.pdf")):
-        return _("""No documentation file available.
-Please read can festival documentation to know how to obtain one.""")
-    try:
-        if index in DS301_PDF_INDEX:
-            if wx.Platform == '__WXMSW__':
-                readerpath = get_acroversion()
-                readerexepath = os.path.join(readerpath,"AcroRd32.exe")
-                if(os.path.isfile(readerexepath)):
-                    os.spawnl(os.P_DETACH, readerexepath, "AcroRd32.exe", "/A", "page=%d=OpenActions" % DS301_PDF_INDEX[index], '"%s"'%os.path.join(cwd, "doc","301_v04000201.pdf"))
-            else:
-                os.system("xpdf -remote DS301 %s %d &"%(os.path.join(cwd, "doc","301_v04000201.pdf"), DS301_PDF_INDEX[index]))
-        else:
-            if wx.Platform == '__WXMSW__':
-                readerpath = get_acroversion()
-                readerexepath = os.path.join(readerpath,"AcroRd32.exe")
-                if(os.path.isfile(readerexepath)):
-                    os.spawnl(os.P_DETACH, readerexepath, "AcroRd32.exe", '"%s"'%os.path.join(cwd, "doc","301_v04000201.pdf"))
-            else:
-                os.system("xpdf -remote DS301 %s &"%os.path.join(cwd, "doc","301_v04000201.pdf"))
-        return True
-    except:
-        if wx.Platform == '__WXMSW__':
-            return _("Check if Acrobat Reader is correctly installed on your computer")
-        else:
-            return _("Check if xpdf is correctly installed on your computer")
+    return "DS301 document is 301_v04000201.pdf in folder doc/"
+#     if not os.path.isfile(os.path.join(cwd, "doc","301_v04000201.pdf")):
+#         return _("""No documentation file available.
+# Please read can festival documentation to know how to obtain one.""")
+#     try:
+#         if index in DS301_PDF_INDEX:
+#             if wx.Platform == '__WXMSW__':
+#                 readerpath = get_acroversion()
+#                 readerexepath = os.path.join(readerpath,"AcroRd32.exe")
+#                 if(os.path.isfile(readerexepath)):
+#                     os.spawnl(os.P_DETACH, readerexepath, "AcroRd32.exe", "/A", "page=%d=OpenActions" % DS301_PDF_INDEX[index], '"%s"'%os.path.join(cwd, "doc","301_v04000201.pdf"))
+#             else:
+#                 os.system("xpdf -remote DS301 %s %d &"%(os.path.join(cwd, "doc","301_v04000201.pdf"), DS301_PDF_INDEX[index]))
+#         else:
+#             if wx.Platform == '__WXMSW__':
+#                 readerpath = get_acroversion()
+#                 readerexepath = os.path.join(readerpath,"AcroRd32.exe")
+#                 if(os.path.isfile(readerexepath)):
+#                     os.spawnl(os.P_DETACH, readerexepath, "AcroRd32.exe", '"%s"'%os.path.join(cwd, "doc","301_v04000201.pdf"))
+#             else:
+#                 os.system("xpdf -remote DS301 %s &"%os.path.join(cwd, "doc","301_v04000201.pdf"))
+#         return True
+#     except:
+#         if wx.Platform == '__WXMSW__':
+#             return "Check if Acrobat Reader is correctly installed on your computer"
+#         else:
+#             return "Check if xpdf is correctly installed on your computer"
         

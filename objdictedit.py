@@ -393,13 +393,13 @@ class objdictedit(wx.Frame, NodeEditorTemplate):
                 index, subIndex = result
                 result = OpenPDFDocIndex(index, ScriptDirectory)
                 if isinstance(result, str):
-                    message = wx.MessageDialog(self, result, "ERROR", wx.OK|wx.ICON_ERROR)
+                    message = wx.MessageDialog(self, result, "INFO", wx.OK|wx.ICON_INFORMATION)
                     message.ShowModal()
                     message.Destroy()
         if not find_index:
             result = OpenPDFDocIndex(None, ScriptDirectory)
             if isinstance(result, str):
-                message = wx.MessageDialog(self, result, "ERROR", wx.OK|wx.ICON_ERROR)
+                message = wx.MessageDialog(self, result, "INFO", wx.OK|wx.ICON_INFORMATION)
                 message.ShowModal()
                 message.Destroy()
         
@@ -423,7 +423,7 @@ class objdictedit(wx.Frame, NodeEditorTemplate):
                 message.Destroy()
         
     def OnAboutMenu(self, event):
-        self.OpenHtmlFrame(_("About CAN Festival"), os.path.join(ScriptDirectory, "doc/about.html"), wx.Size(500, 450))
+        self.OpenHtmlFrame("About CAN Festival", os.path.join(ScriptDirectory, "doc/about.html"), wx.Size(500, 450))
         
     def OpenHtmlFrame(self, title, file, size):
         if title not in self.HtmlFrameOpened:

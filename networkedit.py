@@ -542,13 +542,13 @@ class networkedit(wx.Frame, NetworkEditorTemplate):
                 index, subIndex = result
                 result = OpenPDFDocIndex(index, ScriptDirectory)
                 if isinstance(result, str):
-                    message = wx.MessageDialog(self, result, _("ERROR"), wx.OK|wx.ICON_ERROR)
+                    message = wx.MessageDialog(self, result, "INFO", wx.OK|wx.ICON_INFORMATION)
                     message.ShowModal()
                     message.Destroy()
         if not find_index:
             result = OpenPDFDocIndex(None, ScriptDirectory)
             if isinstance(result, str):
-                message = wx.MessageDialog(self, result, _("ERROR"), wx.OK|wx.ICON_ERROR)
+                message = wx.MessageDialog(self, result, "INFO", wx.OK|wx.ICON_INFORMATION)
                 message.ShowModal()
                 message.Destroy()
         
