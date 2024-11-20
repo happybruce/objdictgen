@@ -835,7 +835,7 @@ class EditingPanel(wx.SplitterWindow):
                             value = int(value, 16)
                         else:
                             value = int(value.encode("hex_codec"), 16)
-                        self.Manager.AddToMasterDCF(node_id, index, subindex, max(1, typeinfos["size"] / 8), value)    
+                        self.Manager.AddToMasterDCF(node_id, index, subindex, max(1, typeinfos["size"] // 8), value)    
                         self.ParentWindow.OpenMasterDCFDialog(node_id)
 
     def OpenDCFDialog(self, node_id):

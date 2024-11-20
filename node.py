@@ -279,7 +279,7 @@ def FindEntryName(index, mappingdictionary, compute=True):
     if base_index:
         infos = mappingdictionary[base_index]
         if infos["struct"] & OD_IdenticalIndexes and compute:
-            return StringFormat(infos["name"], (index - base_index) / infos["incr"] + 1, 0)
+            return StringFormat(infos["name"], (index - base_index) // infos["incr"] + 1, 0)
         else:
             return infos["name"]
     return None
@@ -292,7 +292,7 @@ def FindEntryInfos(index, mappingdictionary, compute=True):
     if base_index:
         copy = mappingdictionary[base_index].copy()
         if copy["struct"] & OD_IdenticalIndexes and compute:
-            copy["name"] = StringFormat(copy["name"], (index - base_index) / copy["incr"] + 1, 0)
+            copy["name"] = StringFormat(copy["name"], (index - base_index) // copy["incr"] + 1, 0)
         copy.pop("values")
         return copy
     return None
@@ -321,17 +321,17 @@ def FindSubentryInfos(index, subIndex, mappingdictionary, compute=True):
                     if "nbmax" in subindex_infos:
                         if idx <= subIndex < idx + subindex_infos["nbmax"]:
                             infos = subindex_infos.copy()
-                            break;
+                            break
                         idx += subindex_infos["nbmax"]
                     else:
                         if subIndex == idx:
                             infos = subindex_infos.copy()
-                            break;
+                            break
                         idx += 1
             elif subIndex == 0:
                 infos = mappingdictionary[base_index]["values"][0].copy()
             if infos is not None and compute:
-                infos["name"] = StringFormat(infos["name"], (index - base_index) / incr + 1, subIndex)
+                infos["name"] = StringFormat(infos["name"], (index - base_index) // incr + 1, subIndex)
             return infos
     return None
 
@@ -399,8 +399,8 @@ Format the text given with the index and subindex defined
 def StringFormat(text, idx, sub):
     result = name_model.match(text)
     if result:
-        format = result.groups()
-        return format[0]%eval(format[1])
+        fmt = result.groups()
+        return fmt[0]%eval(fmt[1])
     else:
         return text
 
@@ -952,10 +952,10 @@ class Node:
         for mapping in self.GetMappings():
             result = FindIndex(index, mapping)
             if result != None:
-                return (index - result) / mapping[result].get("incr", 1)
+                return (index - result) // mapping[result].get("incr", 1)
         result = FindIndex(index, MappingDictionary)
         if result != None:
-            return (index - result) / MappingDictionary[result].get("incr", 1)
+            return (index - result) // MappingDictionary[result].get("incr", 1)
         return 0
 
     def GetCustomisedTypeValues(self, index):
