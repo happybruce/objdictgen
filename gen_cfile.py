@@ -95,7 +95,11 @@ def ComputeValue(type, value):
     if type == "visible_string":
         return "\"%s\""%value, ""
     elif type == "domain":
-        return "\"%s\""%''.join(["\\x%2.2x"%ord(char) for char in value]), ""
+        tempVal = "\"%s\""%''.join(["\\x%2.2x"%ord(char) for char in value])
+        if len(tempVal) <= 2: # empty, only " and "
+            return "NULL", ""
+        else:
+            return "(UNS8*)%s"%temp, ""
     elif type.startswith("real"):
         return "%f"%value, ""
     else:
@@ -210,7 +214,7 @@ def GenerateFileContent(Node, headerfilepath, pointers_dict = {}):
             typeinfos = GetValidTypeInfos(typename, [values])
             if typename == "DOMAIN" and index in variablelist:
                 if not typeinfos[1]:
-                    raise ValueError(_("\nDomain variable not initialized1\nindex : 0x%04X\nsubindex : 0x00")%index)
+                    raise ValueError(("\nDomain variable not initialized1\nindex : 0x%04X\nsubindex : 0x00")%index)
             texts["subIndexType"] = typeinfos[0]
             if subentry_infos["access"].upper() == "CONST":
                 texts["subIndexType"] = "const CONSTSTORE " + texts["subIndexType"]
