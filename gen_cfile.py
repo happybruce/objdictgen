@@ -52,7 +52,8 @@ def UnDigitName(name):
 # Format a string for making a C++ variable
 def FormatName(name):
     wordlist = [word for word in word_model.findall(name) if word != '']
-    return obj_name_prefix+("_".join(wordlist))
+    # return obj_name_prefix+("_".join(wordlist))
+    return ("_".join(wordlist))
 
 # Extract the informations from a given type name
 def GetValidTypeInfos(typename, items=[]):
@@ -611,7 +612,7 @@ s_PDO_status %(NodeName)s_PDO_status[%(maxPDOtransmit)d] = {"""%texts
 
     fileContent += strQuickIndex
     fileContent += """
-const CONSTSTORE UNS16 %(NodeName)s_ObjDictSize = sizeof(%(NodeName)s_objdict)/sizeof(%(NodeName)s_objdict[0]); 
+const CONSTSTORE UNS16 %(NodeName)s_ObjdictSize = sizeof(%(NodeName)s_objdict)/sizeof(%(NodeName)s_objdict[0]); 
 
 CO_Data %(NodeName)s_ObjDictData = CANOPEN_NODE_DATA_INITIALIZER(%(NodeName)s);
 
