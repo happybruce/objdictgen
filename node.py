@@ -904,31 +904,31 @@ class Node:
             name = self.GetEntryName(index)
             values = self.Dictionary[index]
             if isinstance(values, list):
-                result += "%04X (%s):\n"%(index, name)
+                result += f"{index:04X} ({name}):\n"
                 for subidx, value in enumerate(values):
                     subentry_infos = self.GetSubentryInfos(index, subidx + 1)
                     if index == 0x1F22 and value:
                         nb_params = BE_to_LE(value[:4])
                         data = value[4:]
-                        value = "%d arg defined"%nb_params
+                        value = f"{nb_params} arg defined"
                         i = 0
                         count = 1
                         while i < len(data):
-                            value += "\n%04X %02X, arg %d: "%(index, subidx+1, count)
-                            value += "%04X"%BE_to_LE(data[i:i+2])
-                            value += " %02X"%BE_to_LE(data[i+2:i+3])
+                            value += f"\n{index:04X} {subidx+1:02X}, arg {count}: "
+                            value += f"{BE_to_LE(data[i:i+2]):04X}"
+                            value += f" {BE_to_LE(data[i+2:i+3]):02X}"
                             size = BE_to_LE(data[i+3:i+7])
-                            value += " %08X"%size
-                            value += (" %0"+"%d"%(size * 2)+"X")%BE_to_LE(data[i+7:i+7+size])
+                            value += f" {size:08X}"
+                            value += f" {BE_to_LE(data[i+7:i+7+size]):0{size * 2}X}"
                             i += 7 + size
                             count += 1
                     elif isinstance(value, int):
-                        value = "%X"%value
-                    result += "%04X %02X (%s): %s\n"%(index, subidx+1, subentry_infos["name"], value)
+                        value = f"{value:X}"
+                    result += f"{index:04X} {subidx+1:02X} ({subentry_infos['name']}): {value}\n"
             else:
                 if isinstance(values, int):
-                    values = "%X"%values
-                result += "%04X (%s): %s\n"%(index, name, values)
+                    values = f"{values:X}"
+                result += f"{index:04X} ({name}): {values}\n"
         return result
             
     def CompileValue(self, value, index, compute = True):
@@ -1104,8 +1104,8 @@ class Node:
         self.MapTranslation = {"00000000" : "None"}
         listvar = self.GetMapVariableList()
         for index, subIndex, size, name in listvar:
-            self.MapList += ",%s"%name
-            mapcotent = "%04X%02X%02X"%(index,subIndex,size)
+            self.MapList += f",{name}"
+            mapcotent = f"{index:04X}{subIndex:02X}{size:02X}"
             mapname = self.GenerateMapName(name, index, subIndex)
             self.NameTranslation[mapname] = mapcotent
             self.MapTranslation[mapcotent] = mapname
@@ -1133,7 +1133,7 @@ class Node:
     Return the list of variables that can be mapped for the current node
     """
     def GetMapList(self):
-        listvar = [_("None")] + [self.GenerateMapName(name, index, subIndex) for index, subIndex, size, name in self.GetMapVariableList()]
+        listvar = ["None"] + [self.GenerateMapName(name, index, subIndex) for index, subIndex, size, name in self.GetMapVariableList()]
         return ",".join(listvar)
 
 def BE_to_LE(value):
@@ -1146,7 +1146,7 @@ def BE_to_LE(value):
     
     data = [char for char in value]
     data.reverse()
-    return int("".join(["%2.2X"%ord(char) for char in data]), 16)
+    return int("".join([f"{ord(char):02X}" for char in data]), 16)
 
 def LE_to_BE(value, size):
     """

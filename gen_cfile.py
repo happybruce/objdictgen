@@ -64,11 +64,11 @@ def GetValidTypeInfos(typename, items=[]):
         if result:
             values = result.groups()
             if values[0] == "UNSIGNED" and int(values[1]) in [i * 8 for i in range(1, 9)]:
-                typeinfos = ("UNS%s"%values[1], None, "uint%s"%values[1], True)
+                typeinfos = (f"UNS{values[1]}", None, f"uint{values[1]}", True)
             elif values[0] == "INTEGER" and int(values[1]) in [i * 8 for i in range(1, 9)]:
-                typeinfos = ("INTEGER%s"%values[1], None, "int%s"%values[1], False)
+                typeinfos = (f"INTEGER{values[1]}", None, f"int{values[1]}", False)
             elif values[0] == "REAL" and int(values[1]) in (32, 64):
-                typeinfos = ("%s%s"%(values[0], values[1]), None, "real%s"%values[1], False)
+                typeinfos = (f"{values[0]}{values[1]}", None, f"real{values[1]}", False)
             elif values[0] in ["VISIBLE_STRING", "OCTET_STRING"]:
                 size = default_string_size
                 for item in items:
@@ -86,29 +86,29 @@ def GetValidTypeInfos(typename, items=[]):
             elif values[0] == "BOOLEAN":
                 typeinfos = ("UNS8", None, "boolean", False)
             else:
-                raise ValueError(_("""!!! %s isn't a valid type for CanFestival.""")%typename)
+                raise ValueError(f"""!!! {typename} isn't a valid type for CanFestival.""")
             if typeinfos[2] not in ["visible_string", "domain"]:
                 internal_types[typename] = typeinfos
         else:
-            raise ValueError(_("""!!! %s isn't a valid type for CanFestival.""")%typename)
+            raise ValueError(f"""!!! {typename} isn't a valid type for CanFestival.""")
     return typeinfos
 
 def ComputeValue(type, value):
     if type == "visible_string":
-        return "\"%s\""%value, ""
+        return f"\"{value}\"", ""
     elif type == "domain":
         tempVal = "\"%s\""%''.join(["\\x%2.2x"%ord(char) for char in value])
         if len(tempVal) <= 2: # empty, only " and "
             return "NULL", ""
         else:
-            return "(UNS8*)%s"%temp, ""
+            return f"(UNS8*){tempVal}", ""
     elif type.startswith("real"):
-        return "%f"%value, ""
+        return f"{value:.6f}", ""
     else:
         if value >= 0:
-            return "0x%X"%value, "  /* %s */"%str(value)
+            return f"0x{value:X}", f"  /* {value} */"
         else:
-            return "-0x%X"%(0-value), "  /* %s */"%str(value)
+            return f"-0x{0-value:X}", f"  /* {value} */"
 
 def WriteFile(filepath, content):
     cfile = open(filepath,"w")
@@ -118,7 +118,7 @@ def WriteFile(filepath, content):
 def GetTypeName(Node, typenumber):
     typename = Node.GetTypeName(typenumber)
     if typename is None:
-        raise ValueError(_("""!!! Datatype with value "0x%4.4X" isn't defined in CanFestival.""")%typenumber)
+        raise ValueError(f"""!!! Datatype with value "0x{typenumber:04X}" isn't defined in CanFestival.""")
     return typename
 
 def GenerateFileContent(Node, headerfilepath, pointers_dict = {}):
@@ -173,13 +173,13 @@ def GenerateFileContent(Node, headerfilepath, pointers_dict = {}):
             internal_types[rangename] = (typeinfos[0], typeinfos[1], "valueRange_%d"%num)
             minvalue = Node.GetEntry(index, 2)
             maxvalue = Node.GetEntry(index, 3)
-            strDefine += "\n#define valueRange_%d 0x%02X /* Type %s, %s < value < %s */"%(num,index,typeinfos[0],str(minvalue),str(maxvalue))
-            strSwitch += "    case valueRange_%d:\n"%(num)
+            strDefine += f"\n#define valueRange_{num} 0x{index:02X} /* Type {typeinfos[0]}, {minvalue} < value < {maxvalue} */"
+            strSwitch += f"    case valueRange_{num}:\n"
             if typeinfos[3] and minvalue <= 0:
                 strSwitch += "      /* Negative or null low limit ignored because of unsigned type */;\n"
             else:
-                strSwitch += "      if (*(%s*)value < (%s)%s) return OD_VALUE_TOO_LOW;\n"%(typeinfos[0],typeinfos[0],str(minvalue))
-            strSwitch += "      if (*(%s*)value > (%s)%s) return OD_VALUE_TOO_HIGH;\n"%(typeinfos[0],typeinfos[0],str(maxvalue))
+                strSwitch += f"      if (*({typeinfos[0]})value < ({typeinfos[0]}){minvalue}) return OD_VALUE_TOO_LOW;\n"
+            strSwitch += f"      if (*({typeinfos[0]})value > ({typeinfos[0]}){maxvalue}) return OD_VALUE_TOO_HIGH;\n"
             strSwitch += "    break;\n"
 
     valueRangeContent += strDefine
@@ -500,7 +500,7 @@ def GenerateFileContent(Node, headerfilepath, pointers_dict = {}):
     for i, index in enumerate(listIndex):
         texts["index"] = index
         strDeclareIndex += "  { (const CONSTSTORE subindex* const)%(NodeName)s_Index%(index)04X, sizeof(%(NodeName)s_Index%(index)04X)/sizeof(%(NodeName)s_Index%(index)04X[0]), 0x%(index)04X },\n"%texts
-        strDeclareSwitch += "		case 0x%04X: i = %d; %sbreak;\n"%(index, i, indexCallbacks[index])
+        strDeclareSwitch += f"		case 0x%04X: i = %d; %sbreak;\n"%(index, i, indexCallbacks[index])
         for cat, idx_min, idx_max in categories:
             if idx_min <= index <= idx_max:
                 quick_index["lastIndex"][cat] = i
@@ -510,12 +510,12 @@ def GenerateFileContent(Node, headerfilepath, pointers_dict = {}):
                     maxPDOtransmit += 1
     texts["maxPDOtransmit"] = max(1, maxPDOtransmit)
     for index_cat in index_categories:
-        strQuickIndex += "\nconst CONSTSTORE quick_index %s_%s = {\n"%(texts["NodeName"], index_cat)
+        strQuickIndex += f"\nconst CONSTSTORE quick_index {texts['NodeName']}_{index_cat} = {{\n"
         sep = ","
         for i, (cat, idx_min, idx_max) in enumerate(categories):
             if i == len(categories) - 1:
                 sep = ""
-            strQuickIndex += "  %d%s /* %s */\n"%(quick_index[index_cat][cat],sep,cat)
+            strQuickIndex += f"  {quick_index[index_cat][cat]}{sep} /* {cat} */\n"
         strQuickIndex += "};\n"
 
 #-------------------------------------------------------------------------------
@@ -663,5 +663,5 @@ def GenerateFile(filepath, node, pointers_dict = {}):
         WriteFile(headerfilepath, header)
         return None
     except ValueError as message:
-        return _("Unable to Generate C File\n%s")%message
+        return f"Unable to Generate C File\n{message}"
 

@@ -68,7 +68,7 @@ class NetworkEditorTemplate(NodeEditorTemplate):
         if self.NodeList is not None:
             nodeID = self.Manager.GetCurrentNodeID()
             if nodeID != None:
-                nodename = "0x%2.2X %s"%(nodeID, self.Manager.GetCurrentNodeName())
+                nodename = f"0x{nodeID:02X} {self.Manager.GetCurrentNodeName()}"
             else:
                 nodename = self.Manager.GetCurrentNodeName()
             self.NetworkNodes.SetPageText(0, nodename)
@@ -100,7 +100,7 @@ class NetworkEditorTemplate(NodeEditorTemplate):
     def OnRemoveSlaveMenu(self, event):
         slavenames = self.NodeList.GetSlaveNames()
         slaveids = self.NodeList.GetSlaveIDs()
-        dialog = wx.SingleChoiceDialog(self.Frame, _("Choose a slave to remove"), _("Remove slave"), slavenames)
+        dialog = wx.SingleChoiceDialog(self.Frame, "Choose a slave to remove", "Remove slave", slavenames)
         if dialog.ShowModal() == wx.ID_OK:
             choice = dialog.GetSelection()
             result = self.NodeList.RemoveSlaveNode(slaveids[choice])

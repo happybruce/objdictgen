@@ -35,23 +35,23 @@ ColAlignements = [wx.ALIGN_CENTER, wx.ALIGN_LEFT, wx.ALIGN_CENTER, wx.ALIGN_RIGH
 def GetAccessList(write=True):
     _ = lambda x : x
     if write:
-        return [_("Read Only"), _("Write Only"), _("Read/Write"), _("Const")]
-    return [_("Read Only"), _("Read/Write"), _("Const")]
+        return ["Read Only", "Write Only", "Read/Write", "Const"]
+    return ["Read Only", "Read/Write", "Const"]
 AccessList = ",".join(map(_, GetAccessList()))
 RAccessList = ",".join(map(_, GetAccessList(False)))
 ACCESS_LIST_DICT = dict([(_(access), access) for access in GetAccessList()])
 
 def GetBoolList():
     _ = lambda x : x
-    return [_("True"), _("False")]
+    return ["True", "False"]
 BoolList = ",".join(map(_, GetBoolList()))
 BOOL_LIST_DICT = dict([(_(bool), bool) for bool in GetBoolList()])
 
 def GetOptionList():
     _ = lambda x : x
-    return [_("Yes"), _("No")]
+    return ["Yes", "No"]
 OptionList = ",".join(map(_, GetOptionList()))
-OPTION_LIST_DICT = dict([(_(option), option) for option in GetOptionList()])
+OPTION_LIST_DICT = dict([(option, option) for option in GetOptionList()])
 
 [USER_TYPE, SDO_SERVER, SDO_CLIENT, 
  PDO_TRANSMIT, PDO_RECEIVE, MAP_VARIABLE] = list(range(6))
@@ -78,8 +78,7 @@ INDEXCHOICE_SECTIONS = {
 }
 
 def GetSubindexTableColnames():
-    _ = lambda x : x
-    return [_("subindex"), _("name"), _("type"), _("value"), _("access"), _("save"), _("comment"), _("buffer_size")]
+    return ["subindex", "name", "type", "value", "access", "save", "comment", "buffer_size"]
 
 DictionaryOrganisation = [
     {"minIndex" : 0x0001, "maxIndex" : 0x0FFF, "name" : "Data Type Definitions"},
@@ -156,7 +155,7 @@ class SubindexTable(wx.grid.PyGridTableBase):
     def GetColLabelValue(self, col, translate=True):
         if col < len(self.colnames):
             if translate:
-                return _(self.colnames[col])
+                return self.colnames[col]
             return self.colnames[col]
 
     def GetRowLabelValues(self, row, translate=True):
@@ -169,7 +168,7 @@ class SubindexTable(wx.grid.PyGridTableBase):
             if translate and (colname == "access" or 
                               self.editors[row][colname] in ["bool", "option"] or
                               self.editors[row][colname] == "map" and value == "None"):
-                value = _(value)
+                value = value
             return value
             
     def GetEditor(self, row, col):
@@ -188,7 +187,7 @@ class SubindexTable(wx.grid.PyGridTableBase):
                 value = BOOL_LIST_DICT[value]
             elif self.editors[row][colname] == "option":
                 value = OPTION_LIST_DICT[value]
-            elif self.editors[row][colname] == "map" and value == _("None"):
+            elif self.editors[row][colname] == "map" and value == "None":
                 value = "None"
             self.data[row][colname] = value
         
@@ -271,7 +270,7 @@ class SubindexTable(wx.grid.PyGridTableBase):
                         editor = wx.grid.GridCellNumberEditor()
                         renderer = wx.grid.GridCellNumberRenderer()
                         if colname == "value" and "min" in editors and "max" in editors:
-                            editor.SetParameters("%s,%s"%(editors["min"],editors["max"]))
+                            editor.SetParameters(f"{editors['min']},{editors['max']}")
                     elif editortype == "float":
                         editor = wx.grid.GridCellTextEditor()
                         renderer = wx.grid.GridCellStringRenderer()
@@ -511,7 +510,7 @@ class EditingPanel(wx.SplitterWindow):
         self.Index = None
         
         for values in DictionaryOrganisation:
-            text = "   0x%04X-0x%04X      %s"%(values["minIndex"], values["maxIndex"], values["name"])
+            text = f"   0x{values['minIndex']:04X}-0x{values['maxIndex']:04X}      {values['name']}"
             self.PartList.Append(text)
         self.Table = SubindexTable(self, [], [], GetSubindexTableColnames())
         self.SubindexGrid.SetTable(self.Table)
@@ -556,10 +555,10 @@ class EditingPanel(wx.SplitterWindow):
                         typeinfos = self.Manager.GetEntryInfos(subentry_infos["type"])
                         if typeinfos:
                             bus_id = '.'.join(map(str, self.ParentWindow.GetBusId()))
-                            var_name = "%s_%04x_%02x" % (self.Manager.GetCurrentNodeName(), index, subindex)
+                            var_name = f"{self.Manager.GetCurrentNodeName()}_{index:04x}_{subindex:02x}"
                             size = typeinfos["size"]
                             data = wx.TextDataObject(str(
-                                ("%s%s.%d.%d"%(SizeConversion[size], bus_id, index, subindex), 
+                                (f"{SizeConversion[size]}{bus_id}.{index}.{subindex}", 
                                  "location", 
                                  IECTypeConversion.get(typeinfos["name"]), 
                                  var_name, "")))
@@ -579,10 +578,10 @@ class EditingPanel(wx.SplitterWindow):
                         typeinfos = self.Manager.GetEntryInfos(subentry_infos["type"])
                         if subentry_infos["pdo"] and typeinfos:
                             bus_id = '.'.join(map(str, self.ParentWindow.GetBusId()))
-                            var_name = "%s_%04x_%02x" % (self.Manager.GetSlaveName(node_id), index, subindex)
+                            var_name = f"{self.Manager.GetSlaveName(node_id)}_{index:04x}_{subindex:02x}"
                             size = typeinfos["size"]
                             data = wx.TextDataObject(str(
-                                ("%s%s.%d.%d.%d"%(SizeConversion[size], bus_id, node_id, index, subindex), 
+                                (f"{SizeConversion[size]}{bus_id}.{node_id}.{index}.{subindex}", 
                                  "location", 
                                  IECTypeConversion.get(typeinfos["name"]), 
                                  var_name, "")))
@@ -646,7 +645,7 @@ class EditingPanel(wx.SplitterWindow):
             values = DictionaryOrganisation[i]
             self.ListIndex = []
             for name, index in self.Manager.GetCurrentValidIndexes(values["minIndex"], values["maxIndex"]):
-                self.IndexList.Append("0x%04X   %s"%(index, name))
+                self.IndexList.Append(f"0x{index:04X}   {name}")
                 self.ListIndex.append(index)
             if self.Editable:
                 self.ChoiceIndex = []
@@ -662,7 +661,7 @@ class EditingPanel(wx.SplitterWindow):
                 else:
                     for name, index in self.Manager.GetCurrentValidChoices(values["minIndex"], values["maxIndex"]):
                         if index:
-                            self.IndexChoice.Append("0x%04X   %s"%(index, name))
+                            self.IndexChoice.Append(f"0x{index:04X}   {name}")
                         else:
                             self.IndexChoice.Append(name)
                         self.ChoiceIndex.append(index)
@@ -853,7 +852,7 @@ class EditingPanel(wx.SplitterWindow):
                 index = self.ListIndex[selected]
                 if self.Manager.IsCurrentEntry(index):
                     infos = self.Manager.GetEntryInfos(index)
-                    dialog = wx.TextEntryDialog(self, "Give a new name for index 0x%04X"%index,
+                    dialog = wx.TextEntryDialog(self, f"Give a new name for index 0x{index:04X}",
                                  "Rename an index", infos["name"], wx.OK|wx.CANCEL)
                     if dialog.ShowModal() == wx.ID_OK:
                         self.Manager.SetCurrentEntryName(index, dialog.GetValue())

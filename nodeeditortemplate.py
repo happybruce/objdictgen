@@ -80,7 +80,7 @@ class NodeEditorTemplate:
                     struct = "REC"
                 elif entryinfos["struct"] & OD_MultipleSubindexes:
                     struct = "ARRAY"
-                text = "{}: {} entry of struct {}{}.".format(name,category,struct,number)
+                text = f"{name}: {category} entry of struct {struct}{number}."
                 self.Frame.HelpBar.SetStatusText(text, 2)
             else:
                 for i in range(3):
@@ -99,7 +99,7 @@ class NodeEditorTemplate:
                     additem = self.Frame.AddMenu.FindItemByPosition(6)
                     self.Frame.AddMenu.Delete(additem.GetId())
                 if profile not in ("None", "DS-301"):
-                    edititem.SetItemLabel("{} Profile".format(profile)) # TODO: maybe SetAccel of wx.MenuItem
+                    edititem.SetItemLabel(f"{profile} Profile") # TODO: maybe SetAccel of wx.MenuItem
                     edititem.Enable(True)
                     self.Frame.AddMenu.AppendSeparator()
                     for text, indexes in self.Manager.GetCurrentSpecificMenu():
@@ -140,7 +140,7 @@ class NodeEditorTemplate:
         self.EditProfile("Edit DS-302 Profile", dictionary, current)
     
     def OnEditProfileMenu(self, event):
-        title = "Edit {} Profile".format(self.Manager.GetCurrentProfileName())
+        title = f"Edit {self.Manager.GetCurrentProfileName()} Profile"
         dictionary,current = self.Manager.GetCurrentProfileLists()
         self.EditProfile(title, dictionary, current)
     

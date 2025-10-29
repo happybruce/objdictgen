@@ -215,9 +215,9 @@ class NodeManager:
                             self.CurrentNode.SetDS302Profile(Mapping)
                             self.CurrentNode.ExtendSpecificMenu(AddMenuEntries)
                         except:
-                            return _("Problem with DS-302! Syntax Error.")
+                            return "Problem with DS-302! Syntax Error."
                     else:
-                        return _("Couldn't find DS-302 in 'config' folder!")
+                        return "Couldn't find DS-302 in 'config' folder!"
                 elif option == "GenSYNC":
                     AddIndexList.extend([0x1005, 0x1006])
                 elif option == "Emergency":
@@ -261,7 +261,7 @@ class NodeManager:
                 node.SetSpecificMenu(AddMenuEntries)
                 return None
             except:
-                return _("Syntax Error\nBad OD Profile file!")
+                return "Syntax Error\nBad OD Profile file!"
         else:
             # Default profile
             node.SetProfileName("None")
@@ -292,7 +292,7 @@ class NodeManager:
             self.SetCurrentFilePath(filepath)
             return index
         except:
-            return _("Unable to load file \"%s\"!")%filepath
+            return f"Unable to load file \"{filepath}\"!"
 
     """
     Save current node in  a file
@@ -634,9 +634,9 @@ class NodeManager:
                     self.BufferCurrentNode()
                 return None
             else:
-                return _("Index 0x%04X already defined!")%index
+                return f"Index 0x{index:04X} already defined!"
         else:
-            return _("Index 0x%04X isn't a valid index for Map Variable!")%index
+            return f"Index 0x{index:04X} isn't a valid index for Map Variable!"
 
     def AddUserTypeToCurrent(self, type, min, max, length):
         index = 0xA0
@@ -648,7 +648,7 @@ class NodeManager:
             size = self.GetEntryInfos(type)["size"]
             default = self.GetTypeDefaultValue(type)
             if valuetype == 0:
-                self.CurrentNode.AddMappingEntry(index, name = "%s[%d-%d]"%(name, min, max), struct = 3, size = size, default = default)
+                self.CurrentNode.AddMappingEntry(index, name = f"{name}[{min}-{max}]", struct = 3, size = size, default = default)
                 self.CurrentNode.AddMappingEntry(index, 0, values = {"name" : "Number of Entries", "type" : 0x05, "access" : "ro", "pdo" : False})
                 self.CurrentNode.AddMappingEntry(index, 1, values = {"name" : "Type", "type" : 0x05, "access" : "ro", "pdo" : False})
                 self.CurrentNode.AddMappingEntry(index, 2, values = {"name" : "Minimum Value", "type" : type, "access" : "ro", "pdo" : False})
@@ -657,7 +657,7 @@ class NodeManager:
                 self.CurrentNode.AddEntry(index, 2, min)
                 self.CurrentNode.AddEntry(index, 3, max)
             elif valuetype == 1:
-                self.CurrentNode.AddMappingEntry(index, name = "%s%d"%(name, length), struct = 3, size = length * size, default = default)
+                self.CurrentNode.AddMappingEntry(index, name = f"{name}{length}", struct = 3, size = length * size, default = default)
                 self.CurrentNode.AddMappingEntry(index, 0, values = {"name" : "Number of Entries", "type" : 0x05, "access" : "ro", "pdo" : False})
                 self.CurrentNode.AddMappingEntry(index, 1, values = {"name" : "Type", "type" : 0x05, "access" : "ro", "pdo" : False})
                 self.CurrentNode.AddMappingEntry(index, 2, values = {"name" : "Length", "type" : 0x05, "access" : "ro", "pdo" : False})
@@ -666,7 +666,7 @@ class NodeManager:
             self.BufferCurrentNode()
             return None
         else:
-            return _("Too many User Types have already been defined!")
+            return "Too many User Types have already been defined!"
 
 #-------------------------------------------------------------------------------
 #                      Modify Entry and Mapping Functions
@@ -725,7 +725,7 @@ class NodeManager:
                     if dic[type] == 0:
                         try:
                             if value.startswith("$NODEID"):
-                                value = "\"%s\""%value
+                                value = f"\"{value}\""
                             elif value.startswith("0x"):
                                 value = int(value, 16)
                             else:
@@ -777,7 +777,7 @@ class NodeManager:
         size = self.GetEntryInfos(type)["size"]
         default = self.GetTypeDefaultValue(type)
         if new_valuetype == 0:
-            self.CurrentNode.SetMappingEntry(index, name = "%s[%d-%d]"%(name, min, max), struct = 3, size = size, default = default) 
+            self.CurrentNode.SetMappingEntry(index, name = f"{name}[{min}-{max}]", struct = 3, size = size, default = default)
             if valuetype == 1:
                 self.CurrentNode.SetMappingEntry(index, 2, values = {"name" : "Minimum Value", "type" : type, "access" : "ro", "pdo" : False})
                 self.CurrentNode.AddMappingEntry(index, 3, values = {"name" : "Maximum Value", "type" : type, "access" : "ro", "pdo" : False})
@@ -788,7 +788,7 @@ class NodeManager:
             else:
                 self.CurrentNode.SetEntry(index, 3, max)
         elif new_valuetype == 1:
-            self.CurrentNode.SetMappingEntry(index, name = "%s%d"%(name, length), struct = 3, size = size, default = default)
+            self.CurrentNode.SetMappingEntry(index, name = f"{name}{length}", struct = 3, size = size, default = default)
             if valuetype == 0:
                 self.CurrentNode.SetMappingEntry(index, 2, values = {"name" : "Length", "type" : 0x02, "access" : "ro", "pdo" : False})
                 self.CurrentNode.RemoveMappingEntry(index, 3)
@@ -1054,7 +1054,7 @@ class NodeManager:
                 infos = node.GetSubentryInfos(index, i)
                 if infos["name"] == "Number of Entries":
                     dic["buffer_size"] = ""
-                dic["subindex"] = "0x%02X"%i
+                dic["subindex"] = f"0x{i:02X}"
                 dic["name"] = infos["name"]
                 dic["type"] = node.GetTypeName(infos["type"])
                 if dic["type"] is None:
@@ -1107,8 +1107,7 @@ class NodeManager:
                             if values[0] == "UNSIGNED":
                                 dic["buffer_size"] = ""
                                 try:
-                                    format = "0x%0" + str(int(values[1])/4) + "X"
-                                    dic["value"] = format%dic["value"]
+                                    dic["value"] = f"0x{dic['value']:0{int(values[1])/4}X}"
                                 except:
                                     pass
                                 editor["value"] = "string"

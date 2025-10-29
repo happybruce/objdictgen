@@ -178,10 +178,10 @@ class CommunicationDialog(wx.Dialog):
                 self.AllList.append(index)
         self.AllList.sort()
         for index in self.AllList:
-            self.PossibleIndexes.Append("0x%04X   %s"%(index, self.IndexDictionary[index][0]))
+            self.PossibleIndexes.Append(f"0x{index:04X}   {self.IndexDictionary[index][0]}")
         for index in self.CurrentList:
             if index in self.IndexDictionary:
-                self.CurrentIndexes.Append("0x%04X   %s"%(index, self.IndexDictionary[index][0]))
+                self.CurrentIndexes.Append(f"0x{index:04X}   {self.IndexDictionary[index][0]}")
 
     def OnPossibleIndexesDClick(self, event):
         self.SelectPossible()
@@ -343,7 +343,7 @@ class MapVariableDialog(wx.Dialog):
         self.Number.Enable(False)
         
     def SetIndex(self, index):
-        self.Index.SetValue("0x%04X"%index)
+        self.Index.SetValue(f"0x{index:04X}")
 
     def OnOK(self, event):
         error = []
@@ -362,10 +362,10 @@ class MapVariableDialog(wx.Dialog):
                 if i == 0:
                     text += item
                 elif i == len(error) - 1:
-                    text += (" and %s")%item + " must be integers!"
+                    text += f" and {item} must be integers!"
                 else:
-                    text += (", %s")%item + " must be integer!"
-            message = wx.MessageDialog(self, "Form isn't valid. %s".format(text), "Error", wx.OK|wx.ICON_ERROR)
+                    text += f", {item} must be integer!"
+            message = wx.MessageDialog(self, f"Form isn't valid. {text}", "Error", wx.OK|wx.ICON_ERROR)
             message.ShowModal()
             message.Destroy()
         else:
@@ -557,13 +557,13 @@ class UserTypeDialog(wx.Dialog):
                     if i == 0:
                         message += item
                     elif i == len(error) - 1:
-                        message += " and %s"%item + " must be integers!"
+                        message += f" and {item} must be integers!"
                     else:
-                        message += ", %s"%item + " must be integer!"
+                        message += f", {item} must be integer!"
         else:
             message = "A type must be selected!"
         if message is not None:
-            message = wx.MessageDialog(self, "Form isn't valid. %s"%(firstmessage,secondmessage), "Error", wx.OK|wx.ICON_ERROR)
+            message = wx.MessageDialog(self, "Form isn't valid.", "Error", wx.OK|wx.ICON_ERROR)
             message.ShowModal()
             message.Destroy()
         else:
@@ -645,7 +645,7 @@ class UserTypeDialog(wx.Dialog):
 
 def GetNodeTypes():
     _ = lambda x : x
-    return [_("master"), _("slave")]
+    return ["master", "slave"]
 NODE_TYPES_DICT = dict([(_(node_type), node_type) for node_type in GetNodeTypes()])
 
 class NodeInfosDialog(wx.Dialog):
@@ -759,7 +759,7 @@ class NodeInfosDialog(wx.Dialog):
             except:
                 message = _("Node ID must be integer!")
         if message != "":
-            message = wx.MessageDialog(self, message, _("ERROR"), wx.OK|wx.ICON_ERROR)
+            message = wx.MessageDialog(self, message, "ERROR", wx.OK|wx.ICON_ERROR)
             message.ShowModal()
             message.Destroy()
             self.NodeName.SetFocus()
@@ -768,7 +768,7 @@ class NodeInfosDialog(wx.Dialog):
     
     def SetValues(self, name, id, type, description, defaultstringsize):
         self.NodeName.SetValue(name)
-        self.NodeID.SetValue("0x%02X"%id)
+        self.NodeID.SetValue(f"0x{id:02X}")
         self.Type.SetStringSelection(_(type))
         self.Description.SetValue(description)
         self.DefaultStringSize.SetValue(defaultstringsize)
@@ -1052,8 +1052,6 @@ class CreateNodeDialog(wx.Dialog):
 
     def GetProfile(self):
         name = self.Profile.GetStringSelection()
-        if name == _("None"):
-            name = "None"
         return name, self.ListProfile[name]
 
     def GetNMTManagement(self):
@@ -1205,10 +1203,10 @@ class AddSlaveDialog(wx.Dialog):
                 if i == 0:
                     text += item
                 elif i == len(error) - 1:
-                    text += _(" and %s")%item
+                    text += f" and {item}"
                 else:
-                    text += _(", %s")%item 
-            message = wx.MessageDialog(self, "Form isn't complete. %s must be filled!"%text, "Error", wx.OK|wx.ICON_ERROR)
+                    text += f", {item}"
+            message = wx.MessageDialog(self, f"Form isn't complete. {text} must be filled!", "Error", wx.OK|wx.ICON_ERROR)
             message.ShowModal()
             message.Destroy()
         else:
@@ -1249,7 +1247,7 @@ class AddSlaveDialog(wx.Dialog):
         if os.path.isfile(filepath):
             result, question = self.NodeList.ImportEDSFile(filepath)
             if result is not None and question:
-                dialog = wx.MessageDialog(self, ("%s\nWould you like to replace it ?")%result, "Question", wx.YES_NO|wx.ICON_QUESTION)
+                dialog = wx.MessageDialog(self, f"{result}\nWould you like to replace it ?", "Question", wx.YES_NO|wx.ICON_QUESTION)
                 if dialog.ShowModal() == wx.ID_YES:
                     result, question = self.NodeList.ImportEDSFile(filepath, True)
                 dialog.Destroy()
@@ -1289,7 +1287,7 @@ class AddSlaveDialog(wx.Dialog):
 
 def DCFEntryTableColnames():
     _ = lambda x : x
-    return [_("Index"), _("Subindex"), _("Size"), _("Value")]
+    return ["Index", "Subindex", "Size", "Value"]
 
 class DCFEntryValuesTable(wx.grid.PyGridTableBase):
     
@@ -1512,7 +1510,7 @@ class DCFEntryValuesDialog(wx.Dialog):
         try:
             self.Values[row][colname] = int(value, 16)
         except:
-            message = wx.MessageDialog(self, "\"%s\" is not a valid value!"%value, "Error", wx.OK|wx.ICON_ERROR)
+            message = wx.MessageDialog(self, f"\"{value}\" is not a valid value!", "Error", wx.OK|wx.ICON_ERROR)
             message.ShowModal()
             message.Destroy()
         wx.CallAfter(self.RefreshValues)
@@ -1594,10 +1592,10 @@ class DCFEntryValuesDialog(wx.Dialog):
         data = []
         for value in self.Values:
             row = {}
-            row["Index"] = "%04X"%value["Index"]
-            row["Subindex"] = "%02X"%value["Subindex"]
-            row["Size"] = "%08X"%value["Size"]
-            row["Value"] = ("%0"+"%d"%(value["Size"] * 2)+"X")%value["Value"]
+            row["Index"] = f"{value['Index']:04X}"
+            row["Subindex"] = f"{value['Subindex']:02X}"
+            row["Size"] = f"{value['Size']:08X}"
+            row["Value"] = f"{value['Value']:0{value['Size'] * 2}X}"
             data.append(row)
         self.Table.SetData(data)
         self.Table.ResetView(self.ValuesGrid)
