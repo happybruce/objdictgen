@@ -427,7 +427,7 @@ class EditingPanel(wx.SplitterWindow):
     def _init_ctrls(self, prnt):
         wx.SplitterWindow.__init__(self, id=ID_EDITINGPANEL,
               name='MainSplitter', parent=prnt, pos=wx.Point(0, 0),
-              size=wx.Size(-1, -1), style=wx.SP_LIVE_UPDATE|wx.SP_3D)
+              size=wx.Size(-1, -1), style=wx.SP_LIVE_UPDATE|wx.SP_3D|wx.CLIP_CHILDREN)
         self._init_utils()
         
         self.PartList = wx.ListBox(choices=[], id=ID_EDITINGPANELPARTLIST,
@@ -438,17 +438,17 @@ class EditingPanel(wx.SplitterWindow):
 
         self.SecondSplitter = wx.SplitterWindow(id=ID_EDITINGPANELSECONDSPLITTER,
               name='SecondSplitter', parent=self, pos=wx.Point(0, 0), 
-              size=wx.Size(-1, -1), style=wx.SP_LIVE_UPDATE|wx.SP_3D)
+              size=wx.Size(-1, -1), style=wx.SP_LIVE_UPDATE|wx.SP_3D|wx.CLIP_CHILDREN)
         self.SplitHorizontally(self.PartList, self.SecondSplitter, 110)
         self.SetMinimumPaneSize(1)
         
         self.SubindexGridPanel = wx.Panel(id=ID_EDITINGPANELSUBINDEXGRIDPANEL,
               name='SubindexGridPanel', parent=self.SecondSplitter, 
-              pos=wx.Point(0, 0), size=wx.Size(-1, -1), style=wx.TAB_TRAVERSAL)
+              pos=wx.Point(0, 0), size=wx.Size(-1, -1), style=wx.TAB_TRAVERSAL|wx.CLIP_CHILDREN)
 
         self.IndexListPanel = wx.Panel(id=ID_EDITINGPANELINDEXLISTPANEL,
               name='IndexListPanel', parent=self.SecondSplitter, 
-              pos=wx.Point(0, 0), size=wx.Size(-1, -1), style=wx.TAB_TRAVERSAL)
+              pos=wx.Point(0, 0), size=wx.Size(-1, -1), style=wx.TAB_TRAVERSAL|wx.CLIP_CHILDREN)
         self.SecondSplitter.SplitVertically(self.IndexListPanel, self.SubindexGridPanel, 280)
         self.SecondSplitter.SetMinimumPaneSize(1)
         
@@ -472,6 +472,13 @@ class EditingPanel(wx.SplitterWindow):
               self.OnSubindexGridCellLeftClick)
         self.SubindexGrid.Bind(wx.grid.EVT_GRID_EDITOR_SHOWN, 
               self.OnSubindexGridEditorShown)
+
+        # Keep live splitter behavior while reducing repaint flicker on Windows.
+        self.SetDoubleBuffered(True)
+        self.SecondSplitter.SetDoubleBuffered(True)
+        self.IndexListPanel.SetDoubleBuffered(True)
+        self.SubindexGridPanel.SetDoubleBuffered(True)
+        self.SubindexGrid.SetDoubleBuffered(True)
 
         self.CallbackCheck = wx.CheckBox(id=ID_EDITINGPANELCALLBACKCHECK,
               label='Have Callbacks', name='CallbackCheck',
