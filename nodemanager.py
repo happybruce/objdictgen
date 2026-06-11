@@ -211,10 +211,12 @@ class NodeManager:
                     # Charging DS-302 profile if choosen by user
                     if os.path.isfile(DS302Path):
                         try:
-                            exec(compile(open(DS302Path, "rb").read(), DS302Path, 'exec'))
-                            self.CurrentNode.SetDS302Profile(Mapping)
-                            self.CurrentNode.ExtendSpecificMenu(AddMenuEntries)
-                        except:
+                            profile_scope = {}
+                            with open(DS302Path, "rb") as profile_file:
+                                exec(compile(profile_file.read(), DS302Path, 'exec'), profile_scope)
+                            self.CurrentNode.SetDS302Profile(profile_scope["Mapping"])
+                            self.CurrentNode.ExtendSpecificMenu(profile_scope["AddMenuEntries"])
+                        except Exception:
                             return "Problem with DS-302! Syntax Error."
                     else:
                         return "Couldn't find DS-302 in 'config' folder!"
@@ -255,12 +257,14 @@ class NodeManager:
         if profile != "None":
             # Try to charge the profile given
             try:
-                exec(compile(open(filepath, "rb").read(), filepath, 'exec'))
+                profile_scope = {}
+                with open(filepath, "rb") as profile_file:
+                    exec(compile(profile_file.read(), filepath, 'exec'), profile_scope)
                 node.SetProfileName(profile)
-                node.SetProfile(Mapping)
-                node.SetSpecificMenu(AddMenuEntries)
+                node.SetProfile(profile_scope["Mapping"])
+                node.SetSpecificMenu(profile_scope["AddMenuEntries"])
                 return None
-            except:
+            except Exception:
                 return "Syntax Error\nBad OD Profile file!"
         else:
             # Default profile
@@ -278,20 +282,19 @@ class NodeManager:
             # file = open(filepath, "r")
             # node = load(file)
             # TODO: if can be compatible with old?
-            file = open(filepath, "rb")
-            node = pickle.load(file)
+            with open(filepath, "rb") as node_file:
+                node = pickle.load(node_file)
             if node.GetNodeName() == "": # use file name as node name if node name is empty
                 bname = os.path.basename(filepath)
                 nodename, _ = os.path.splitext(bname)
                 node.SetNodeName(nodename)
-            file.close()
             self.CurrentNode = node
             self.CurrentNode.SetNodeID(0)
             # Add a new buffer and defining current state
             index = self.AddNodeBuffer(self.CurrentNode.Copy(), True)
             self.SetCurrentFilePath(filepath)
             return index
-        except:
+        except (OSError, pickle.PickleError, AttributeError, EOFError):
             return f"Unable to load file \"{filepath}\"!"
 
     """
@@ -307,9 +310,8 @@ class NodeManager:
         # file = open(filepath, "w")
         # dump(self.CurrentNode, file)
         # TODO: if can be compatible with old?
-        file = open(filepath, "wb")
-        pickle.dump(self.CurrentNode, file)
-        file.close()
+        with open(filepath, "wb") as node_file:
+            pickle.dump(self.CurrentNode, node_file)
         self.SetCurrentFilePath(filepath)
         # Update saved state in buffer
         self.UndoBuffers[self.NodeIndex].CurrentSaved()

@@ -227,15 +227,12 @@ class NodeList:
         try:
             cpjpath = os.path.join(self.Root, "nodelist.cpj")
             content = eds_utils.GenerateCPJContent(self)
-            if netname:
-                file = open(cpjpath, "a")
-            else:
-                file = open(cpjpath, "w")
-            file.write(content)
-            file.close()
+            mode = "a" if netname else "w"
+            with open(cpjpath, mode) as file:
+                file.write(content)
             self.Changed = False
             return None
-        except:
+        except Exception:
             return "Fail to save node list"
     
     def GetSlaveNodeEntry(self, nodeid, index, subindex = None):

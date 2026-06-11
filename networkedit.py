@@ -667,11 +667,12 @@ def AddExceptHook(path, app_version='[No version]'):#, ignored_exceptions=[]):
                     if 'self' in exception_locals:
                         info['self'] = format_namespace(exception_locals['self'].__dict__)
                 
-                output = open(path+os.sep+"bug_report_"+info['date'].replace(':','-').replace(' ','_')+".txt",'w')
-                lst = list(info.keys())
-                lst.sort()
-                for a in lst:
-                    output.write(a+":\n"+str(info[a])+"\n\n")
+                report_path = path+os.sep+"bug_report_"+info['date'].replace(':','-').replace(' ','_')+".txt"
+                with open(report_path, 'w') as output:
+                    lst = list(info.keys())
+                    lst.sort()
+                    for a in lst:
+                        output.write(a+":\n"+str(info[a])+"\n\n")
 
     #sys.excepthook = lambda *args: wx.CallAfter(handle_exception, *args)
     sys.excepthook = handle_exception

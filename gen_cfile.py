@@ -111,9 +111,8 @@ def ComputeValue(type, value):
             return f"-0x{0-value:X}", f"  /* {value} */"
 
 def WriteFile(filepath, content):
-    cfile = open(filepath,"w")
-    cfile.write(content)
-    cfile.close()
+    with open(filepath, "w") as cfile:
+        cfile.write(content)
 
 def GetTypeName(Node, typenumber):
     typename = Node.GetTypeName(typenumber)

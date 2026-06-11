@@ -140,7 +140,8 @@ def ExtractSections(file):
 def ParseCPJFile(filepath):
     networks = []
     # Read file text
-    cpj_file = open(filepath,'r').read()
+    with open(filepath, 'r') as cpj_handle:
+        cpj_file = cpj_handle.read()
     sections = ExtractSections(cpj_file)
     # Parse assignments for each section
     for section_name, assignments in sections:
@@ -250,7 +251,8 @@ def ParseCPJFile(filepath):
 def ParseEDSFile(filepath):
     eds_dict = {}
     # Read file text
-    eds_file = open(filepath,'r').read()
+    with open(filepath, 'r') as eds_handle:
+        eds_file = eds_handle.read()
     sections = ExtractSections(eds_file)
     
     # Parse assignments for each section
@@ -415,11 +417,9 @@ def VerifyValue(values, section_name, param):
 # Function that write an EDS file after generate it's content
 def WriteFile(filepath, content):
     # Open file in write mode
-    cfile = open(filepath,"w")
-    # Write content
-    cfile.write(content)
-    # Close file
-    cfile.close()
+    with open(filepath, "w") as cfile:
+        # Write content
+        cfile.write(content)
 
 
 # Function that generate the EDS file content for the current node in the manager
@@ -671,11 +671,13 @@ def GenerateNode(filepath, nodeID = 0):
             if os.path.isfile(ProfilePath):
                 try:
                     # Load Profile
-                    exec(compile(open(ProfilePath, "rb").read(), ProfilePath, 'exec'))
+                    profile_scope = {}
+                    with open(ProfilePath, "rb") as profile_file:
+                        exec(compile(profile_file.read(), ProfilePath, 'exec'), profile_scope)
                     Node.SetProfileName(ProfileName)
-                    Node.SetProfile(Mapping)
-                    Node.SetSpecificMenu(AddMenuEntries)
-                except:
+                    Node.SetProfile(profile_scope["Mapping"])
+                    Node.SetSpecificMenu(profile_scope["AddMenuEntries"])
+                except Exception:
                     pass
         # Read all entries in the EDS dictionary 
         for entry, values in eds_dict.items():
